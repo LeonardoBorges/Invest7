@@ -139,9 +139,21 @@ public class MenuSimulacaoCompleta {
         }
 
         CalculadoraVariavel calculadoraV = new CalculadoraVariavel();
-        List <Fiis> fiis = calculadoraV.simularFundoImobiliario(new Fiis (capital, aporteMensal,
+        List <Fiis> fiisCalculados = calculadoraV.simularFundoImobiliario(new Fiis (capital, aporteMensal,
                 prazo, quantidadeCotas, reinvestir));
 
+        System.out.println("+-------------------+----------------+-------------------+");
+        System.out.println("| Fundo             | Saldo de Cotas | Saldo de Dividendos |");
+        System.out.println("+-------------------+----------------+-------------------+");
+
+        for (Fiis fiis : fiisCalculados){
+            System.out.println(String.format(
+                    "| %-17s | %14.2f | %17.2f |",
+                    fiis.getNome(),
+                    fiis.getSaldoCotas(),
+                    fiis.getSaldoDividendos()
+            ));
+        }
         //Acoes acoes = calculadoraV.simularAcao(new Acoes(capital, prazo, quantidade, precoVenda))
 
 

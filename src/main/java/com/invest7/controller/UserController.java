@@ -20,9 +20,9 @@ public class UserController {
         return cpfCliente.verificaEmail(email);
     }
 
-    public boolean criarUser(String nome, String email, String senha, String cpf, String endereco,String genero, String dt_nasc, int id_perfil){
+    public boolean criarUser(String nome, String email, String senhaHash, String cpf, String endereco,String genero, String dt_nasc, int id_perfil){
         UserDAO userDAO = new UserDAO();
-        UserModel user = new UserModel(nome, cpf, endereco, email, senha, genero, dt_nasc, id_perfil);
+        UserModel user = new UserModel(nome, cpf, endereco, email, senhaHash, genero, dt_nasc, id_perfil);
         user = userDAO.createUser(user);
         if (user.getId_user() > 0){
             UserSession.setLoggedInUserId(user.getId_user());

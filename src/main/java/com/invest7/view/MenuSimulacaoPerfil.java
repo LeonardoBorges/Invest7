@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 
 public class MenuSimulacaoPerfil {
+    /*
     public void EscolherPerfilInvestidor(){
         Scanner sc = new Scanner(System.in);
         int escolhas = 0;
@@ -31,4 +32,6 @@ public class MenuSimulacaoPerfil {
         }
 
     }
+
+     */
 }

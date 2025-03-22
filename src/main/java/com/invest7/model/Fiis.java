@@ -8,6 +8,8 @@ public class Fiis extends Produto {
     private double dividendYield;
     private double desvioCotas;
     private double desvioDividendos;
+    private double saldoCotas; // Novo atributo
+    private double saldoDividendos;
 
     public Fiis(String nome, double valorInvestido, double txIr, double precoFiis, double dividendYield, double desvioCotas, double desvioDividendos) {
         super(nome, valorInvestido);
@@ -17,6 +19,7 @@ public class Fiis extends Produto {
         this.desvioCotas = desvioCotas;
         this.desvioDividendos = desvioDividendos;
     }
+
 
     public Fiis(double valorInvestido, double aporte, int meses, int qtdCotas, int reinvestir) {
         super(valorInvestido, meses);
@@ -33,11 +36,21 @@ public class Fiis extends Produto {
         this.desvioDividendos = desvioDividendos;
     }
 
-    public void calcularDividendos() {
-        double dividendos = getValorInvestido() * (dividendYield / 100);
-        System.out.println("Dividendos Mensais: R$ " + dividendos);
+    public double getSaldoDividendos() {
+        return saldoDividendos;
     }
 
+    public void setSaldoDividendos(double saldoDividendos) {
+        this.saldoDividendos = saldoDividendos;
+    }
+
+    public double getSaldoCotas() {
+        return saldoCotas;
+    }
+
+    public void setSaldoCotas(double saldoCotas) {
+        this.saldoCotas = saldoCotas;
+    }
     public double getAporte() {
         return aporte;
     }

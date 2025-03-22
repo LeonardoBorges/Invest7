@@ -1,6 +1,7 @@
 package com.invest7.model;
 
 class Teste {
+    /*
     public static void main(String[] args) {
         RendaFixa rf = new RendaFixa("CDB", 1000, 1, 1, 0, 0);
         rf.exibir();
@@ -16,4 +17,6 @@ class Teste {
         fii.exibir();
         fii.calcularDividendos();
     }
+
+     */
 }
