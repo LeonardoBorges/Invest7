@@ -1,17 +1,21 @@
+
 package com.invest7.controller;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 public class DataValidate {
-    public String validarData(String dataString){
+    public String validarData(String dataString) {
+        if (dataString == null || dataString.equals("")) {
+            System.out.println("Data não pode ser nula.");
+            return null;
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date data = null;
         String dt_str = null;
         try {
-
             data = dateFormat.parse(dataString);
             dt_str = dateFormat.format(data);
         } catch (ParseException e) {
