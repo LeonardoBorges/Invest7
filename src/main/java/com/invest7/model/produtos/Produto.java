@@ -8,11 +8,13 @@ public class Produto {
     private double valorInvestido;
     private BigDecimal capital;
     private int meses;
-
-    public Produto(BigDecimal valorInvestido, int meses) {
-        this.valorInvestido = valorInvestido;
+/*
+    public Produto(BigDecimal capital, int meses) {
+        this.valorInvestido = capital;
         this.meses = meses;
     }
+
+ */
 
     public Produto(int idProduto) {
         this.idProduto = idProduto;

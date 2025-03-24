@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import com.invest7.model.produtos.RendaFixa;
 import com.invest7.model.RendaFixa_Result;
 
 public class ConsoleView {
@@ -15,12 +16,12 @@ public class ConsoleView {
     
             for(RendaFixa produto : resultados) {
                 System.out.println("\nProduto: " + produto.getNome());
-                System.out.println("Risco: " + produto.getRiscoFinanceiro() + "/5");
-                System.out.println("Investimento mínimo: " + nf.format(produto.getInvestimentoMinimo()));
-                System.out.println("Pessimista: " + nf.format(produto.getValorPessimista()));
-                System.out.println("Médio: " + nf.format(produto.getValorMedio()));
-                System.out.println("Otimista: " + nf.format(produto.getValorOtimista()));
-                System.out.println("IR: " + produto.getImpostoRendaIR() + "%");
+                System.out.println("Risco: " + produto.getRisco_financeiro() + "/5");
+                System.out.println("Investimento mínimo: " + nf.format(produto.getInvestimento_minimo()));
+                System.out.println("Pessimista: " + nf.format(produto.getPercentPessimistic()));
+                System.out.println("Médio: " + nf.format(produto.getPercentAverage()));
+                System.out.println("Otimista: " + nf.format(produto.getPercentOptimistic()));
+                System.out.println("IR: " + produto.getImposto_renda_IR() + "%");
                 System.out.println("---------------------------------");
             }
         }

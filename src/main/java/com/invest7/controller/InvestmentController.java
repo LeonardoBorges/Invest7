@@ -8,6 +8,7 @@ import com.invest7.model.RendaFixa_Result;
 import com.invest7.view.ConsoleView;
 
 public class InvestmentController {
+    /*
 
     private final ConsoleView view;
     private final RendaFixaCalculator calculator;
@@ -42,5 +43,7 @@ public class InvestmentController {
         view.imprimirCabecalho(valorInicial, meses, dias, RendaFixaCalculator.TAXA_SELIC, RendaFixaCalculator.CDI_ANUAL);
         view.imprimirResultados(resultados);
     }
+
+     */
 }
 

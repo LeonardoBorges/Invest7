@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.invest7.dao.RendaFixaDAO;
 
-import main.java.com.invest7.model.produtos.RendaFixa;
+import com.invest7.model.produtos.RendaFixa;
 
 
 public class CalculadoraFixa {
@@ -16,10 +16,10 @@ public class CalculadoraFixa {
     public List<RendaFixa> simularInvestimentos(BigDecimal capitalInicial, 
                                               BigDecimal aporteMensal, 
                                               int meses) {
-        List<RendaFixa> produtos = dao.buscarTodosProdutos();
+        List<RendaFixa> produtos = dao.buscarRendaFixa();
         
         for(RendaFixa produto : produtos) {
-            BigDecimal taxa = BigDecimal.valueOf(produto.getRentabilidadeLiquida());
+            BigDecimal taxa = BigDecimal.valueOf(produto.getRentabilidade_liquida());
             
             BigDecimal pessimista = calcularProjecao(
                 capitalInicial, 
@@ -41,10 +41,12 @@ public class CalculadoraFixa {
                 meses, 
                 taxa.multiply(BigDecimal.valueOf(1.1))
             );
-
-            produto.setValorPessimista(pessimista);
+/*
+            produto.setPercentPessimistic(pessimista);
             produto.setValorMedio(medio);
             produto.setValorOtimista(otimista);
+
+ */
         }
         
         return produtos;
