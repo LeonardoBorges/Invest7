@@ -1,4 +1,4 @@
-package com.invest7.view;
+package com.invest7.view.menus.simulacao;
 
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class MenuSimulacaoPerfil {
 
         escolhas = sc.nextInt();
 
-        switch (escolhas){
+       /* switch (escolhas){
             case 1:
                 simulacaoPerfilConservador();
                 break;
@@ -30,6 +30,8 @@ public class MenuSimulacaoPerfil {
             default:
                 break;
         }
+
+        */
 
     }
 

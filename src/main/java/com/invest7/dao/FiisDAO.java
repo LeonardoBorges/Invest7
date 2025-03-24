@@ -1,5 +1,5 @@
 package com.invest7.dao;
-import com.invest7.model.Fiis;
+import com.invest7.model.produtos.Fiis;
 import com.invest7.util.ConnectionFactory;
 
 import java.sql.Connection;
@@ -19,7 +19,7 @@ public class FiisDAO {
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
                 try (ResultSet rs = stmt.executeQuery()) {
-                   while (rs.next()) {
+                    while (rs.next()) {
                         Fiis fii = new Fiis(
                                 rs.getString("nome_prod"),
                                 rs.getDouble("preco_fiis"),

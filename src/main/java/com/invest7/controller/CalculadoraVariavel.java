@@ -1,8 +1,6 @@
 package com.invest7.controller;
-import com.invest7.dao.AcoesDao;
 import com.invest7.dao.FiisDAO;
-import com.invest7.model.Fiis;
-import com.invest7.model.Acoes;
+import com.invest7.model.produtos.Fiis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,19 +10,17 @@ public class CalculadoraVariavel {
     public List<Fiis> simularFundoImobiliario(Fiis calculadoraV) {
         FiisDAO dao = new FiisDAO();
         List<Fiis> resultados = dao.buscarFiis();
-        List<Fiis> fiisSimulados = new ArrayList<>();
-
-        for (Fiis fiis : resultados) {
-            double saldoDividendos = 0;
-            double dividendoPorCota = fiis.getDividendYield();
-            double valorAporte = calculadoraV.getAporte();
-            double precoCota = fiis.getPrecoFiis();
-            double dvCotas = fiis.getDesvioCotas();
-            double dvDiv = fiis.getDesvioDividendos();
-            int meses = calculadoraV.getMeses();
-            int quantidadeCotas = calculadoraV.getQtdCotas();
-            int reinvestir = calculadoraV.getReinvestir();
-
+        List<Fiis> fiis = new ArrayList<>();
+        for (Fiis fiisSimulados : resultados) {
+            double saldoDividendos = 0,
+                    dividendoPorCota = fiisSimulados.getDividendYield(),
+                    valorAporte = calculadoraV.getAporte(),
+                    precoCota = fiisSimulados.getPrecoFiis(),
+                    dvCotas = fiisSimulados.getDesvioCotas(),
+                    dvDiv = fiisSimulados.getDesvioDividendos();
+            int meses = calculadoraV.getMeses(),
+                    quantidadeCotas = calculadoraV.getQtdCotas(),
+                    reinvestir = calculadoraV.getReinvestir();
 
             for (int i = 1; i <= meses; i++) {
                 double dividendosRecebidos = quantidadeCotas * dividendoPorCota;
@@ -39,37 +35,47 @@ public class CalculadoraVariavel {
                     quantidadeCotas += novasCotasAporte;
                     saldoDividendos -= novasCotasAporte * precoCota;
                 }
+
+
+
             }
 
-            // Calcula saldo de cotas e dividendos reais
-            double saldoCotas = quantidadeCotas * precoCota;
+            //criar no model os atributos abaixo
+
+            double saldoCotas = quantidadeCotas*precoCota;
             double saldoCotasReal = saldoCotas - saldoCotas * dvCotas;
             double saldoDivReal = saldoDividendos - saldoDividendos * dvDiv;
 
-            // Atualiza o objeto Fiis com os resultados da simulação
-            fiis.setSaldoCotas(saldoCotasReal);
-            fiis.setSaldoDividendos(saldoDivReal);
+            fiisSimulados.setSaldoCotas(saldoCotasReal);
+            fiisSimulados.setSaldoDividendos(saldoDivReal);
 
-            // Adiciona o Fiis simulado na lista de resultados
-            fiisSimulados.add(fiis);
+            fiis.add(fiisSimulados);
         }
-        return fiisSimulados;
+        return fiis;
     }
 }
 /*
-    public Acoes simularAcao(Acoes calculadoraV) {
-        AcoesDao dao = new AcoesDao();
-        Acoes resultados = dao.buscarAcoes(new Acoes());
-        double precoCompra = calculadoraV.getPrecoAcao(), precoVenda = calculadoraV.getPrecoVenda();
-        int quantidade = calculadoraV.getQtdAcoes();
+ public Acoes simularAcao(Acoes calculadoraV) {
+       AcoesDao dao = new AcoesDao();
+       Acoes resultados = dao.buscarAcoes(new Acoes());
+       double precoCompra = calculadoraV.getPrecoAcao(),
+               precoVenda = calculadoraV.getPrecoVenda();
 
-        double custoTotal = precoCompra * quantidade;
-        double valorVenda = precoVenda * quantidade;
-        double saldo = valorVenda - custoTotal;
 
-        return null;
-    }
+
+
+double capital = calculadoraV.getValorInvestido();
+       int quantidade = (int) (capital / resultados.getPrecoAcao());
+       double txIr = calculadoraV.getTxIr();
+       double custoTotal = precoCompra * quantidade;
+       double valorVenda = precoVenda * quantidade;
+       double saldo = valorVenda - custoTotal;
+
+
+       if (saldo > 20000){
+           double saldoFinal = saldo - (saldo*txIr);
+       }
+       return null;
+   }
 }
-
-
- */
+*/

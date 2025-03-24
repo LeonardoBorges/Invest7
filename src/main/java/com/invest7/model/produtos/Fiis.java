@@ -1,4 +1,5 @@
-package com.invest7.model;
+package com.invest7.model.produtos;
+
 public class Fiis extends Produto {
     private double aporte;
     private int qtdCotas;
@@ -8,7 +9,7 @@ public class Fiis extends Produto {
     private double dividendYield;
     private double desvioCotas;
     private double desvioDividendos;
-    private double saldoCotas; // Novo atributo
+    private double saldoCotas;
     private double saldoDividendos;
 
     public Fiis(String nome, double valorInvestido, double txIr, double precoFiis, double dividendYield, double desvioCotas, double desvioDividendos) {
@@ -19,7 +20,6 @@ public class Fiis extends Produto {
         this.desvioCotas = desvioCotas;
         this.desvioDividendos = desvioDividendos;
     }
-
 
     public Fiis(double valorInvestido, double aporte, int meses, int qtdCotas, int reinvestir) {
         super(valorInvestido, meses);
@@ -36,21 +36,7 @@ public class Fiis extends Produto {
         this.desvioDividendos = desvioDividendos;
     }
 
-    public double getSaldoDividendos() {
-        return saldoDividendos;
-    }
 
-    public void setSaldoDividendos(double saldoDividendos) {
-        this.saldoDividendos = saldoDividendos;
-    }
-
-    public double getSaldoCotas() {
-        return saldoCotas;
-    }
-
-    public void setSaldoCotas(double saldoCotas) {
-        this.saldoCotas = saldoCotas;
-    }
     public double getAporte() {
         return aporte;
     }
@@ -115,11 +101,20 @@ public class Fiis extends Produto {
         this.reinvestir = reinvestir;
     }
 
-    public double calculaSaldoCotas(int qtdCotas, double precoCota) {
-        return qtdCotas*precoCota;
+
+    public double getSaldoCotas() {
+        return saldoCotas;
     }
 
+    public void setSaldoCotas(double saldoCotas) {
+        this.saldoCotas = saldoCotas;
+    }
 
+    public double getSaldoDividendos() {
+        return saldoDividendos;
+    }
 
-
+    public void setSaldoDividendos(double saldoDividendos) {
+        this.saldoDividendos = saldoDividendos;
+    }
 }
