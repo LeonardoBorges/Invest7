@@ -6,25 +6,48 @@ import java.util.List;
 import java.util.Locale;
 
 public class ConsoleView {
-    private static final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-    
-    public void mostrarResultados(List<RendaFixa> resultados) {
-        System.out.println("\n=== RESULTADOS DA SIMULAÇÃO ===");
+    private final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+    public void exibirSimulacao(List<RendaFixa> produtos, String idSimulacao) {
+        System.out.println("\n********** Renda Fixa **********");
+        System.out.println("=== Investimento ===");
+        System.out.println("Simulação ID: " + idSimulacao);
         
-        for (RendaFixa produto : resultados) {
-            System.out.println("\n" + produto.getNome());
-            System.out.println("Tipo: " + produto.getTipoProduto());
-            System.out.println("Risco: " + produto.getRiscoFinanceiro() + "/5");
-            System.out.println("Investimento mínimo: " + nf.format(produto.getInvestimentoMinimo()));
-            
-            System.out.println("\nPessimista: " + nf.format(produto.getPessimistic())
-                + " (" + produto.getPercentPessimistic() + ")");
-            System.out.println("Médio:    " + nf.format(produto.getAverage())
-                + " (" + produto.getPercentAverage() + ")");
-            System.out.println("Otimista: " + nf.format(produto.getOptimistic())
-                + " (" + produto.getPercentOptimistic() + ")");
-            
-            System.out.println("---------------------------------");
+        exibirCategoria(produtos, "POUPANCA", "Poupança");
+        exibirCategoria(produtos, "CDB", "CDB/RDB");
+        exibirCategoria(produtos, "LCI", "LCI/LCA");
+        exibirCategoria(produtos, "TESOURO", "Tesouro Direto");
+        
+        exibirResumoOutrasAplicacoes(produtos);
+    }
+
+    private void exibirCategoria(List<RendaFixa> produtos, String tipo, String titulo) {
+        System.out.println("\n********** " + titulo + " **********");
+        produtos.stream()
+            .filter(p -> p.getTipoProduto().equalsIgnoreCase(tipo))
+            .forEach(this::exibirProduto);
+    }
+
+    private void exibirProduto(RendaFixa produto) {
+        System.out.println("\n" + produto.getNome());
+        System.out.println("Valor Investido: " + nf.format(produto.getValorInvestido()));
+        System.out.println("Rendimento Bruto: " + nf.format(produto.getRendimentoBruto()));
+        
+        if (produto.isTaxable()) {
+            System.out.println("Imposto de Renda (" + produto.getImpostoIR().divide(produto.getRendimentoBruto(), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)) + "%): " 
+                + nf.format(produto.getImpostoIR()));
         }
+        
+        System.out.println("Rendimento Líquido: " + nf.format(produto.getRendimentoLiquido()));
+        System.out.println("Valor Total: " + nf.format(produto.getValorTotal()));
+        System.out.println("Lucro: " + produto.getPercentualLucro());
+        System.out.println("---------------------------------");
+    }
+
+    private void exibirResumoOutrasAplicacoes(List<RendaFixa> produtos) {
+        System.out.println("\n**** Outras Aplicações ****");
+        produtos.stream()
+            .filter(p -> !List.of("POUPANCA", "CDB", "LCI", "TESOURO").contains(p.getTipoProduto()))
+            .forEach(p -> System.out.println(p.getNome() + ": " + nf.format(p.getValorTotal())));
     }
 }
