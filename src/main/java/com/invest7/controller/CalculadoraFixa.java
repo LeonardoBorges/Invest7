@@ -2,7 +2,7 @@ package com.invest7.controller;
 
 import com.invest7.dao.RendaFixaDAO;
 import com.invest7.model.produtos.RendaFixa;
-import com.invest7.service.TaxService;
+import com.invest7.util.TaxService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
