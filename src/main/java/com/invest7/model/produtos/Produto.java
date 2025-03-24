@@ -1,10 +1,18 @@
 package com.invest7.model.produtos;
 
+import java.math.BigDecimal;
+
 public class Produto {
     private int idProduto;
     private String nome;
     private double valorInvestido;
+    private BigDecimal capital;
     private int meses;
+
+    public Produto(BigDecimal valorInvestido, int meses) {
+        this.valorInvestido = valorInvestido;
+        this.meses = meses;
+    }
 
     public Produto(int idProduto) {
         this.idProduto = idProduto;
