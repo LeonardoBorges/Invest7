@@ -8,6 +8,60 @@ import java.util.Scanner;
 import com.invest7.model.RendaFixa_Result;
 
 public class ConsoleView {
+    private static final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    
+        public void mostrarResultados(List<RendaFixa> resultados) {
+            System.out.println("\n=== RESULTADOS DA SIMULAÇÃO ===");
+    
+            for(RendaFixa produto : resultados) {
+                System.out.println("\nProduto: " + produto.getNome());
+                System.out.println("Risco: " + produto.getRiscoFinanceiro() + "/5");
+                System.out.println("Investimento mínimo: " + nf.format(produto.getInvestimentoMinimo()));
+                System.out.println("Pessimista: " + nf.format(produto.getValorPessimista()));
+                System.out.println("Médio: " + nf.format(produto.getValorMedio()));
+                System.out.println("Otimista: " + nf.format(produto.getValorOtimista()));
+                System.out.println("IR: " + produto.getImpostoRendaIR() + "%");
+                System.out.println("---------------------------------");
+            }
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* 
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -98,6 +152,6 @@ public class ConsoleView {
 
     private String formatarPercentual(BigDecimal valor) {
         return String.format("%.2f%%", valor.multiply(BigDecimal.valueOf(100)));
-    }
+    }*/
 }
 
