@@ -1,36 +1,65 @@
 package com.invest7.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.List;
 
-public class CalculadoraRFprovisoria {
-    static DecimalFormat df = new DecimalFormat("#,##0.00");
-    public static double calculoImpRenda(int meses) {
-        double aliqIR;
-        if (meses <= 6) aliqIR = 0.225;
-        else if (meses <= 12) aliqIR = 0.20;
-        else if (meses <= 25) aliqIR = 0.175;
-        else aliqIR = 0.15;
-        return aliqIR;
+import com.invest7.dao.RendaFixaDAO;
+
+import main.java.com.invest7.model.produtos.RendaFixa;
+
+
+public class CalculadoraFixa {
+    private final RendaFixaDAO dao = new RendaFixaDAO();
+
+    public List<RendaFixa> simularInvestimentos(BigDecimal capitalInicial, 
+                                              BigDecimal aporteMensal, 
+                                              int meses) {
+        List<RendaFixa> produtos = dao.buscarTodosProdutos();
+        
+        for(RendaFixa produto : produtos) {
+            BigDecimal taxa = BigDecimal.valueOf(produto.getRentabilidadeLiquida());
+            
+            BigDecimal pessimista = calcularProjecao(
+                capitalInicial, 
+                aporteMensal, 
+                meses, 
+                taxa.multiply(BigDecimal.valueOf(0.9))
+            );
+            
+            BigDecimal medio = calcularProjecao(
+                capitalInicial, 
+                aporteMensal, 
+                meses, 
+                taxa
+            );
+            
+            BigDecimal otimista = calcularProjecao(
+                capitalInicial, 
+                aporteMensal, 
+                meses, 
+                taxa.multiply(BigDecimal.valueOf(1.1))
+            );
+
+            produto.setValorPessimista(pessimista);
+            produto.setValorMedio(medio);
+            produto.setValorOtimista(otimista);
+        }
+        
+        return produtos;
     }
 
-    //calculadora RF provisória
-    public static double calculoRendBruto(double valorInicial, double aporteM, double tx, int meses) {
-        return valorInicial * Math.pow(1 + tx, meses) + aporteM * ((Math.pow(1 + tx, meses) - 1) / tx);
+    private BigDecimal calcularProjecao(BigDecimal capitalInicial,
+                                      BigDecimal aporteMensal,
+                                      int meses,
+                                      BigDecimal taxaMensal) {
+        BigDecimal total = capitalInicial;
+        for(int i = 0; i < meses; i++) {
+            BigDecimal rendimento = total.multiply(taxaMensal);
+            total = total.add(rendimento).add(aporteMensal);
+        }
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static double calculoRendLiq(double rendBrutoRF, double valorInicial, double iR) {
-        return rendBrutoRF - ((rendBrutoRF - valorInicial) * iR);
-    }
-
-    public static void imprIsento(double rendBruto, double tx) {
-        System.out.println("\nTaxa: " + df.format(tx * 100) + "\nRendimento Líquido: R$" + df.format(rendBruto) +
-                "\nImposto de Renda: Isento\n");
-
-    }
-
-    public static void imprNIsento(double rendBruto, double rendLiq, double iR, double tx){
-        System.out.println("Taxa:" + df.format(tx*100)+ "\nRendimento Bruto: R$" +
-                df.format(rendBruto) + "\nImposto de Renda: " + df.format(iR*100)
-                +"%\nRendimento Liquido: R$" + df.format(rendLiq) +"\n" );
-    }
 }
