@@ -1,0 +1,265 @@
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class InvestmentSimulator {
+
+    // ANSI color codes
+    private static final String AZUL = "\033[34m";
+    private static final String VERDE = "\033[32m";
+    private static final String VERMELHO = "\033[31m";
+    private static final String AMARELO = "\033[33m";
+    private static final String ROXO = "\033[35m";
+    private static final String CIANO = "\033[36m";
+    private static final String RESET = "\033[0m";
+    private static final String NEGRITO = "\033[1m";
+
+    // Current market rates
+    private static final BigDecimal TAXA_SELIC = new BigDecimal("0.0814");  // 8.14%
+    private static final BigDecimal TR_MENSAL = new BigDecimal("0.0001");     // 0.01%
+    private static final BigDecimal CDI_ANUAL = new BigDecimal("0.10");       // 10%
+    private static final BigDecimal IPCA_ANUAL = new BigDecimal("0.05");      // 5%
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+    static class InvestmentResult {
+        String nome;
+        BigDecimal pessimista;
+        BigDecimal media;
+        BigDecimal otimista;
+        String percentPessimista;
+        String percentMedia;
+        String percentOtimista;
+
+        public InvestmentResult(String nome, BigDecimal pessimista, BigDecimal media, BigDecimal otimista,
+                                String percentPessimista, String percentMedia, String percentOtimista) {
+            this.nome = nome;
+            this.pessimista = pessimista;
+            this.media = media;
+            this.otimista = otimista;
+            this.percentPessimista = percentPessimista;
+            this.percentMedia = percentMedia;
+            this.percentOtimista = percentOtimista;
+        }
+    }
+
+    public static void main(Stringargs) {
+        executarSimuladorTotal();
+    }
+
+    private static void executarSimuladorTotal() {
+        System.out.println(NEGRITO + "=== Simulador Total de Investimentos ===" + RESET);
+
+        BigDecimal valorInicial = lerBigDecimalPositivo("Valor inicial (R$)");
+        BigDecimal aporteMensal = lerBigDecimalPositivo("Aporte mensal (R$)");
+        int meses = lerInteiroPositivo("Período (meses)");
+        int dias = meses * 30;
+
+        List<InvestmentResult> resultados = new ArrayList<>();
+
+        // Simular todos os investimentos
+        resultados.add(calcularPoupanca("Poupança", valorInicial, aporteMensal, meses));
+        resultados.add(calcularCDBPrefixado("CDB Prefixado", valorInicial, aporteMensal, meses, new BigDecimal("0.1245"), true));
+        resultados.add(calcularCDBIPCA("CDB IPCA+", valorInicial, aporteMensal, meses, new BigDecimal("0.078"), true));
+        resultados.add(calcularCDBPosfixado("CDB Pós-fixado", valorInicial, aporteMensal, meses, new BigDecimal("1.025"), true));
+        resultados.add(calcularLCIPrefixado("LCI/LCA Prefixado", valorInicial, aporteMensal, meses, new BigDecimal("0.1268"), false));
+        resultados.add(calcularLCIIPCA("LCI/LCA IPCA+", valorInicial, aporteMensal, meses, new BigDecimal("0.058"), false));
+        resultados.add(calcularLCIPosfixado("LCI/LCA Pós-fixado", valorInicial, aporteMensal, meses, new BigDecimal("0.915"), false));
+        resultados.add(calcularTesouroPrefixado("Tesouro Prefixado", valorInicial, aporteMensal, meses, new BigDecimal("0.1487")));
+        resultados.add(calcularTesouroIPCA("Tesouro IPCA+", valorInicial, aporteMensal, meses, new BigDecimal("0.0763")));
+        resultados.add(calcularTesouroPosfixado("Tesouro Pós-fixado", valorInicial, aporteMensal, meses, new BigDecimal("0.0006")));
+
+        imprimirCabecalho(valorInicial, meses, dias);
+        imprimirResultados(resultados);
+    }
+
+    private static void imprimirCabecalho(BigDecimal valorInicial, int meses, int dias) {
+        System.out.println("\n" + AZUL + NEGRITO + "*******************************************" + RESET);
+        System.out.println(AZUL + "Valor da Aplicação: " + NEGRITO + nf.format(valorInicial) + RESET);
+        System.out.println(AZUL + "Vencimento: " + NEGRITO + meses + " meses" + RESET);
+        System.out.println(AZUL + "Tipo de período: Mensal" + RESET);
+        System.out.println(AZUL + "Dias: " + NEGRITO + dias + RESET);
+        System.out.println(AZUL + "Taxa SELIC: " + NEGRITO + formatarPercentual(TAXA_SELIC) + " ao ano" + RESET);
+        System.out.println(AZUL + "CDB/RDB/LC: " + NEGRITO + formatarPercentual(CDI_ANUAL) + " DI" + RESET);
+        System.out.println(AZUL + "LCI/LCA: " + NEGRITO + formatarPercentual(CDI_ANUAL.multiply(new BigDecimal("0.915"))) + " DI" + RESET);
+        System.out.println(AZUL + NEGRITO + "*******************************************" + RESET);
+    }
+
+    private static void imprimirResultados(List<InvestmentResult> resultados) {
+        for (InvestmentResult res : resultados) {
+            System.out.println("\n" + ROXO + NEGRITO + res.nome + RESET);
+            System.out.println(VERDE + "Proj. Pessimista" + RESET);
+            System.out.println(NEGRITO + nf.format(res.pessimista) + RESET);
+            System.out.println("+ " + nf.format(res.pessimista.subtract(calcularTotalInvestido(res.pessimista, res.media, res.otimista))) + " • " + res.percentPessimista + "%" + RESET);
+            System.out.println(AMARELO + "Proj. Média" + RESET);
+            System.out.println(NEGRITO + nf.format(res.media) + RESET);
+            System.out.println("+ " + nf.format(res.media.subtract(calcularTotalInvestido(res.pessimista, res.media, res.otimista))) + " • " + res.percentMedia + "%" + RESET);
+            System.out.println(VERMELHO + "Proj. Otimista" + RESET);
+            System.out.println(NEGRITO + nf.format(res.otimista) + RESET);
+            System.out.println("+ " + nf.format(res.otimista.subtract(calcularTotalInvestido(res.pessimista, res.media, res.otimista))) + " • " + res.percentOtimista + "%" + RESET);
+            System.out.println(CIANO + "__________________________________________" + RESET);
+        }
+    }
+
+    private static BigDecimal calcularTotalInvestido(BigDecimal... values) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (BigDecimal val : values) {
+            total = total.add(val);
+        }
+        return total.divide(new BigDecimal(values.length), MathContext.DECIMAL128);
+    }
+
+    private static InvestmentResult calcularPoupanca(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses) {
+        int dias = meses * 30;
+        BigDecimal taxaMensal;
+        if (TAXA_SELIC.compareTo(new BigDecimal("0.085")) > 0) {
+            taxaMensal = new BigDecimal("0.005").add(TR_MENSAL);
+        } else {
+            taxaMensal = TAXA_SELIC.multiply(new BigDecimal("0.7")).divide(BigDecimal.valueOf(12), MathContext.DECIMAL128).add(TR_MENSAL);
+        }
+
+        BigDecimal media = calcularValorFuturo(valorInicial, aporteMensal, meses, taxaMensal, false, dias);
+        BigDecimal pessimista = calcularValorFuturo(valorInicial, aporteMensal, meses, taxaMensal.multiply(new BigDecimal("0.9")), false, dias);
+        BigDecimal otimista = calcularValorFuturo(valorInicial, aporteMensal, meses, taxaMensal.multiply(new BigDecimal("1.1")), false, dias);
+
+        String percPess = calcularPercentual(pessimista, valorInicial, aporteMensal, meses);
+        String percMed = calcularPercentual(media, valorInicial, aporteMensal, meses);
+        String percOti = calcularPercentual(otimista, valorInicial, aporteMensal, meses);
+
+        return new InvestmentResult(nome, pessimista, media, otimista, percPess, percMed, percOti);
+    }
+
+    private static InvestmentResult calcularCDBPrefixado(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal taxaAnual, boolean taxavel) {
+        BigDecimal taxaMensal = taxaAnual.divide(BigDecimal.valueOf(12), MathContext.DECIMAL128);
+        int dias = meses * 30;
+
+        BigDecimal media = calcularValorFuturo(valorInicial, aporteMensal, meses, taxaMensal, taxavel, dias);
+        BigDecimal pessimista = calcularValorFuturo(valorInicial, aporteMensal, meses, taxaMensal.multiply(new BigDecimal("0.9")), taxavel, dias);
+        BigDecimal otimista = calcularValorFuturo(valorInicial, aporteMensal, meses, taxaMensal.multiply(new BigDecimal("1.1")), taxavel, dias);
+
+        String percPess = calcularPercentual(pessimista, valorInicial, aporteMensal, meses);
+        String percMed = calcularPercentual(media, valorInicial, aporteMensal, meses);
+        String percOti = calcularPercentual(otimista, valorInicial, aporteMensal, meses);
+
+        return new InvestmentResult(nome, pessimista, media, otimista, percPess, percMed, percOti);
+    }
+
+    private static InvestmentResult calcularCDBIPCA(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal spread, boolean taxavel) {
+        BigDecimal taxaAnual = IPCA_ANUAL.add(spread);
+        return calcularCDBPrefixado(nome, valorInicial, aporteMensal, meses, taxaAnual, taxavel);
+    }
+
+    private static InvestmentResult calcularCDBPosfixado(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal percentualCDI, boolean taxavel) {
+        BigDecimal taxaAnual = CDI_ANUAL.multiply(percentualCDI);
+        return calcularCDBPrefixado(nome, valorInicial, aporteMensal, meses, taxaAnual, taxavel);
+    }
+
+    private static InvestmentResult calcularLCIPrefixado(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal taxaAnual, boolean taxavel) {
+        return calcularCDBPrefixado(nome, valorInicial, aporteMensal, meses, taxaAnual, taxavel);
+    }
+
+    private static InvestmentResult calcularLCIIPCA(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal spread, boolean taxavel) {
+        return calcularCDBIPCA(nome, valorInicial, aporteMensal, meses, spread, taxavel);
+    }
+
+    private static InvestmentResult calcularLCIPosfixado(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal percentualCDI, boolean taxavel) {
+        return calcularCDBPosfixado(nome, valorInicial, aporteMensal, meses, percentualCDI, taxavel);
+    }
+
+    private static InvestmentResult calcularTesouroPrefixado(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal taxaAnual) {
+        return calcularCDBPrefixado(nome, valorInicial, aporteMensal, meses, taxaAnual, true);
+    }
+
+    private static InvestmentResult calcularTesouroIPCA(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal spread) {
+        BigDecimal taxaAnual = IPCA_ANUAL.add(spread);
+        return calcularCDBPrefixado(nome, valorInicial, aporteMensal, meses, taxaAnual, true);
+    }
+
+    private static InvestmentResult calcularTesouroPosfixado(String nome, BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal spread) {
+        BigDecimal taxaAnual = CDI_ANUAL.add(spread);
+        return calcularCDBPrefixado(nome, valorInicial, aporteMensal, meses, taxaAnual, true);
+    }
+
+    private static BigDecimal calcularValorFuturo(BigDecimal valorInicial, BigDecimal aporteMensal, int meses, BigDecimal taxaMensal, boolean taxavel, int dias) {
+        BigDecimal totalInvestido = valorInicial.add(aporteMensal.multiply(BigDecimal.valueOf(meses)));
+        BigDecimal balance = valorInicial;
+        for (int i = 0; i < meses; i++) {
+            BigDecimal juros = balance.multiply(taxaMensal, MathContext.DECIMAL128);
+            balance = balance.add(juros).add(aporteMensal);
+        }
+        if (taxavel) {
+            BigDecimal rendimento = balance.subtract(totalInvestido);
+            BigDecimal aliquota = getAliquotaIR(dias);
+            BigDecimal imposto = rendimento.multiply(aliquota, MathContext.DECIMAL128);
+            balance = balance.subtract(imposto);
+        }
+        return balance.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private static BigDecimal getAliquotaIR(int dias) {
+        if (dias <= 180) {
+            return new BigDecimal("0.225");
+        } else if (dias <= 360) {
+            return new BigDecimal("0.20");
+        } else if (dias <= 720) {
+            return new BigDecimal("0.175");
+        } else {
+            return new BigDecimal("0.15");
+        }
+    }
+
+    private static String calcularPercentual(BigDecimal montante, BigDecimal valorInicial, BigDecimal aporteMensal, int meses) {
+        BigDecimal totalInvestido = valorInicial.add(aporteMensal.multiply(BigDecimal.valueOf(meses)));
+        BigDecimal rendimento = montante.subtract(totalInvestido);
+        BigDecimal percentual = rendimento.divide(totalInvestido, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        return String.format("%.2f%%", percentual);
+    }
+
+    private static BigDecimal lerBigDecimalPositivo(String mensagem) {
+        BigDecimal valor;
+        do {
+            System.out.print(mensagem + ": ");
+            String input = scanner.nextLine().replace(",", ".");
+            try {
+                valor = new BigDecimal(input);
+                if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                    System.out.println("Valor deve ser positivo.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido.");
+            }
+        } while (true);
+        return valor;
+    }
+
+    private static int lerInteiroPositivo(String mensagem) {
+        int valor;
+        do {
+            System.out.print(mensagem + ": ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Valor inválido.");
+                scanner.next();
+            }
+            valor = scanner.nextInt();
+            if (valor <= 0) {
+                System.out.println("Valor deve ser positivo.");
+            } else {
+                break;
+            }
+        } while (true);
+        scanner.nextLine(); // Consume newline
+        return valor;
+    }
+
+    private static String formatarPercentual(BigDecimal valor) {
+        return String.format("%.2f%%", valor.multiply(BigDecimal.valueOf(100)));
+    }
+}
