@@ -3,44 +3,63 @@ package com.invest7.model.produtos;
 import java.math.BigDecimal;
 
 public class RendaFixa extends Produto {
+    private String tipoProduto;
     private double rentabilidadeBruta;
+    private double rentabilidadeLiquida;
     private int riscoFinanceiro;
     private double investimentoMinimo;
-    private String tipoProduto;
     private boolean isTaxable;
-    private BigDecimal pessimistic;
-    private BigDecimal average;
-    private BigDecimal optimistic;
-    private String percentPessimistic;
-    private String percentAverage;
-    private String percentOptimistic;
+    private String taxaBase;
+    private double porcentagemTaxa;
+    
+    // Simulation results
+    private BigDecimal valorInvestido;
+    private BigDecimal rendimentoBruto;
+    private BigDecimal impostoIR;
+    private BigDecimal rendimentoLiquido;
+    private BigDecimal valorTotal;
+    private String percentualLucro;
 
-    public RendaFixa(String nome, double rentabilidadeBruta, int riscoFinanceiro,
-                    double investimentoMinimo, String tipoProduto, boolean isTaxable) {
+    public RendaFixa(String nome, String tipoProduto, double rentabilidadeBruta, 
+                    double rentabilidadeLiquida, int riscoFinanceiro, double investimentoMinimo, 
+                    boolean isTaxable, String taxaBase, double porcentagemTaxa) {
         super(nome);
+        this.tipoProduto = tipoProduto;
         this.rentabilidadeBruta = rentabilidadeBruta;
+        this.rentabilidadeLiquida = rentabilidadeLiquida;
         this.riscoFinanceiro = riscoFinanceiro;
         this.investimentoMinimo = investimentoMinimo;
-        this.tipoProduto = tipoProduto;
         this.isTaxable = isTaxable;
+        this.taxaBase = taxaBase;
+        this.porcentagemTaxa = porcentagemTaxa;
     }
 
     // Getters and setters
+    public String getTipoProduto() { return tipoProduto; }
     public double getRentabilidadeBruta() { return rentabilidadeBruta; }
+    public double getRentabilidadeLiquida() { return rentabilidadeLiquida; }
     public int getRiscoFinanceiro() { return riscoFinanceiro; }
     public double getInvestimentoMinimo() { return investimentoMinimo; }
-    public String getTipoProduto() { return tipoProduto; }
     public boolean isTaxable() { return isTaxable; }
-    public BigDecimal getPessimistic() { return pessimistic; }
-    public void setPessimistic(BigDecimal val) { this.pessimistic = val; }
-    public BigDecimal getAverage() { return average; }
-    public void setAverage(BigDecimal val) { this.average = val; }
-    public BigDecimal getOptimistic() { return optimistic; }
-    public void setOptimistic(BigDecimal val) { this.optimistic = val; }
-    public String getPercentPessimistic() { return percentPessimistic; }
-    public void setPercentPessimistic(String val) { this.percentPessimistic = val; }
-    public String getPercentAverage() { return percentAverage; }
-    public void setPercentAverage(String val) { this.percentAverage = val; }
-    public String getPercentOptimistic() { return percentOptimistic; }
-    public void setPercentOptimistic(String val) { this.percentOptimistic = val; }
+    public String getTaxaBase() { return taxaBase; }
+    public double getPorcentagemTaxa() { return porcentagemTaxa; }
+    
+    // Simulation results
+    public void setSimulationResults(BigDecimal valorInvestido, BigDecimal rendimentoBruto, 
+                                   BigDecimal impostoIR, BigDecimal rendimentoLiquido,
+                                   BigDecimal valorTotal, String percentualLucro) {
+        this.valorInvestido = valorInvestido;
+        this.rendimentoBruto = rendimentoBruto;
+        this.impostoIR = impostoIR;
+        this.rendimentoLiquido = rendimentoLiquido;
+        this.valorTotal = valorTotal;
+        this.percentualLucro = percentualLucro;
+    }
+
+    public BigDecimal getValorInvestido() { return valorInvestido; }
+    public BigDecimal getRendimentoBruto() { return rendimentoBruto; }
+    public BigDecimal getImpostoIR() { return impostoIR; }
+    public BigDecimal getRendimentoLiquido() { return rendimentoLiquido; }
+    public BigDecimal getValorTotal() { return valorTotal; }
+    public String getPercentualLucro() { return percentualLucro; }
 }
