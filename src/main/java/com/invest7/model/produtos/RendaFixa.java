@@ -17,22 +17,19 @@ public class RendaFixa extends Produto{
     private BigDecimal aporteMensal;
     private BigDecimal capital ;
     // Default constructor
-    public RendaFixaB() {
-        super();
-    }
 
     // Full constructor
-    public RendaFixaB(BigDecimal capital, BigDecimal aporte, int prazo) {
+    public RendaFixa(BigDecimal capital, BigDecimal aporte, int prazo) {
         super(capital, prazo); // Add matching constructor in Produto
         this.aporteMensal = aporte;
     }
-    public RendaFixaB(double rentabilidade_bruta, double rentabilidade_liquida,
+    public RendaFixa(String nome, double rentabilidade_bruta, double rentabilidade_liquida,
                       int risco_financeiro, double investimento_minimo,
                       double imposto_renda_IR, BigDecimal pessimistic,
                       BigDecimal average, BigDecimal optimistic,
                       String percentPessimistic, String percentAverage,
                       String percentOptimistic) {
-        super();
+        super(nome);
         this.rentabilidade_bruta = rentabilidade_bruta;
         this.rentabilidade_liquida = rentabilidade_liquida;
         this.risco_financeiro = risco_financeiro;
@@ -46,7 +43,7 @@ public class RendaFixa extends Produto{
         this.percentOptimistic = percentOptimistic;
     }
     // return DAO
-    public RendaFixaB(String nome_produto, double rendabilidade_bruta, double rentabilidade_liquida,
+    public RendaFixa(String nome_produto, double rendabilidade_bruta, double rentabilidade_liquida,
                       int risco_financeiro, double investimento_minimo, double imposto_renda_IR){
         super(nome_produto);
         this.rentabilidade_bruta = rendabilidade_bruta;
@@ -56,9 +53,6 @@ public class RendaFixa extends Produto{
         this.imposto_renda_IR = imposto_renda_IR;
     }
 
-    public RendaFixa(String nomeProduto, double rentabilidadeBruta, double rentabilidadeLiquida, int riscoFinanceiro, double investimentoMinimo, double impostoRendaIr) {
-        super();
-    }
 
     // Getters and setters for all properties
     public double getRentabilidade_bruta() {
@@ -148,10 +142,10 @@ public class RendaFixa extends Produto{
     public void setPercentOptimistic(String percentOptimistic) {
         this.percentOptimistic = percentOptimistic;
     }
-    public double getAporteMensal() {
+    public BigDecimal getAporteMensal() {
         return aporteMensal;
     }
-    public void setAporteMensal(double aporteMensal) {
+    public void setAporteMensal(BigDecimal aporteMensal) {
         this.aporteMensal = aporteMensal;
     }
 
