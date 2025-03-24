@@ -73,10 +73,12 @@ public class UserDAO {
                             rs.getString("email"),
                             rs.getString("senha")
                     );
+                } else {
+                    return null; // Melhor retornar null se não encontrar o usuário
                 }
             }
         } catch (SQLException e) {  // Captura apenas SQLException
-            System.err.println("Erro ao buscar usuário: " + e.getMessage());
+            System.err.println("Erro ao buscar usuário : " + e.getMessage());
         }
 
         return userL;

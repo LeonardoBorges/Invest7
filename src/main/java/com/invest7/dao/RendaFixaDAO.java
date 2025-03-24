@@ -1,6 +1,5 @@
 package com.invest7.dao;
 
-import com.invest7.model.produtos.Rendafixa;
 import com.invest7.util.ConnectionFactory;
 
 import java.sql.Connection;
@@ -9,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.invest7.model.produtos.RendaFixa;
 public class RendaFixaDAO {
 
     public List<RendaFixa> buscarRendaFixa() {

@@ -61,12 +61,35 @@ public class CadastroView {
         digitoCerto = false;
         while (!digitoCerto) {
             System.out.println("3- Digite o seu endereco: ");
-            if (sc.hasNextLine()) {
-                endereco = sc.nextLine();
-                digitoCerto = true;
-            } else {
-                System.out.println("Endereco Incorreto, digite novamente...");
-                sc.next();
+            System.out.println("Digite 1 - para digitar o endereco");
+            System.out.println("Digite 2 - para buscar o CEP por API");
+            int escolhaEndereco = sc.nextInt();
+            sc.nextLine();
+            switch (escolhaEndereco) {
+                case (1):
+                if (sc.hasNextLine()) {
+                    endereco = sc.nextLine();
+                    digitoCerto = true;
+                } else {
+                    System.out.println("Tipo de entrada incorreta, digite novamente...");
+                    sc.next();
+                }
+                break;
+
+                case 2:
+                    System.out.println("Digite o CEP");
+                    String cep = sc.nextLine();
+                    BuscarCep viacep = new BuscarCep();
+                    endereco = viacep.buscarApi(cep);
+                    System.out.println("Endereco : " + endereco);
+                    digitoCerto = true;
+                    break;
+
+                default:
+                    System.out.println("Opcao invalida, digite novamente...");
+                    break;
+
+
             }
         }
 
