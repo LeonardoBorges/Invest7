@@ -1,65 +1,71 @@
-package com.invest7.model.produtos;
+package com.invest7.controller;
 
+import com.invest7.dao.RendaFixaDAO;
+import com.invest7.model.produtos.RendaFixa;
+import com.invest7.util.TaxService;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
-public class RendaFixa extends Produto {
-    private String tipoProduto;
-    private double rentabilidadeBruta;
-    private double rentabilidadeLiquida;
-    private int riscoFinanceiro;
-    private double investimentoMinimo;
-    private boolean isTaxable;
-    private String taxaBase;
-    private double porcentagemTaxa;
-    
-    // Simulation results
-    private BigDecimal valorInvestido;
-    private BigDecimal rendimentoBruto;
-    private BigDecimal impostoIR;
-    private BigDecimal rendimentoLiquido;
-    private BigDecimal valorTotal;
-    private String percentualLucro;
+public class CalculadoraFixa {
+    private final RendaFixaDAO dao = new RendaFixaDAO();
+    private final BigDecimal SELIC_ANUAL = new BigDecimal("13.25");
+    private final BigDecimal CDI_ANUAL = new BigDecimal("13.15");
 
-    public RendaFixa(String nome, String tipoProduto, double rentabilidadeBruta, 
-                    double rentabilidadeLiquida, int riscoFinanceiro, double investimentoMinimo, 
-                    boolean isTaxable, String taxaBase, double porcentagemTaxa) {
-        super(nome);
-        this.tipoProduto = tipoProduto;
-        this.rentabilidadeBruta = rentabilidadeBruta;
-        this.rentabilidadeLiquida = rentabilidadeLiquida;
-        this.riscoFinanceiro = riscoFinanceiro;
-        this.investimentoMinimo = investimentoMinimo;
-        this.isTaxable = isTaxable;
-        this.taxaBase = taxaBase;
-        this.porcentagemTaxa = porcentagemTaxa;
+    public List<RendaFixa> simularInvestimento(BigDecimal valorInicial, int meses, String tipoPeriodo) {
+        List<RendaFixa> produtos = dao.buscarTodosProdutos();
+        int dias = meses * 30;
+        
+        for (RendaFixa produto : produtos) {
+            BigDecimal taxaAnual = calcularTaxaAnual(produto);
+            BigDecimal taxaPeriodo = converterTaxaPeriodo(taxaAnual, tipoPeriodo);
+            
+            BigDecimal valorInvestido = valorInicial;
+            BigDecimal rendimentoBruto = valorInvestido.multiply(taxaPeriodo)
+                .setScale(2, RoundingMode.HALF_UP);
+            
+            BigDecimal impostoIR = TaxService.calcularTaxaIR(dias, produto.isTaxable())
+                .multiply(rendimentoBruto)
+                .setScale(2, RoundingMode.HALF_UP);
+            
+            BigDecimal rendimentoLiquido = rendimentoBruto.subtract(impostoIR);
+            BigDecimal valorTotal = valorInvestido.add(rendimentoLiquido);
+            
+            BigDecimal lucro = valorTotal.subtract(valorInvestido);
+            String percentLucro = lucro.divide(valorInvestido, 4, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100))
+                .setScale(2, RoundingMode.HALF_UP) + "%";
+
+            produto.setSimulationResults(
+                valorInvestido,
+                rendimentoBruto,
+                impostoIR,
+                rendimentoLiquido,
+                valorTotal,
+                percentLucro
+            );
+        }
+        return produtos;
     }
 
-    // Getters and setters
-    public String getTipoProduto() { return tipoProduto; }
-    public double getRentabilidadeBruta() { return rentabilidadeBruta; }
-    public double getRentabilidadeLiquida() { return rentabilidadeLiquida; }
-    public int getRiscoFinanceiro() { return riscoFinanceiro; }
-    public double getInvestimentoMinimo() { return investimentoMinimo; }
-    public boolean isTaxable() { return isTaxable; }
-    public String getTaxaBase() { return taxaBase; }
-    public double getPorcentagemTaxa() { return porcentagemTaxa; }
-    
-    // Simulation results
-    public void setSimulationResults(BigDecimal valorInvestido, BigDecimal rendimentoBruto, 
-                                   BigDecimal impostoIR, BigDecimal rendimentoLiquido,
-                                   BigDecimal valorTotal, String percentualLucro) {
-        this.valorInvestido = valorInvestido;
-        this.rendimentoBruto = rendimentoBruto;
-        this.impostoIR = impostoIR;
-        this.rendimentoLiquido = rendimentoLiquido;
-        this.valorTotal = valorTotal;
-        this.percentualLucro = percentualLucro;
+    private BigDecimal calcularTaxaAnual(RendaFixa produto) {
+        switch (produto.getTaxaBase()) {
+            case "SELIC":
+                return SELIC_ANUAL.multiply(BigDecimal.valueOf(produto.getPorcentagemTaxa() / 100));
+            case "CDI":
+                return CDI_ANUAL.multiply(BigDecimal.valueOf(produto.getPorcentagemTaxa() / 100));
+            case "FIXA":
+                return BigDecimal.valueOf(produto.getRentabilidadeBruta());
+            default:
+                return BigDecimal.ZERO;
+        }
     }
 
-    public BigDecimal getValorInvestido() { return valorInvestido; }
-    public BigDecimal getRendimentoBruto() { return rendimentoBruto; }
-    public BigDecimal getImpostoIR() { return impostoIR; }
-    public BigDecimal getRendimentoLiquido() { return rendimentoLiquido; }
-    public BigDecimal getValorTotal() { return valorTotal; }
-    public String getPercentualLucro() { return percentualLucro; }
+    private BigDecimal converterTaxaPeriodo(BigDecimal taxaAnual, String tipoPeriodo) {
+        if ("MENSAL".equalsIgnoreCase(tipoPeriodo)) {
+            return taxaAnual.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
+                .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
+        }
+        return taxaAnual.divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
+    }
 }
