@@ -3,19 +3,26 @@ import com.invest7.controller.CalculadoraVariavel;
 import com.invest7.model.produtos.Acoes;
 import com.invest7.model.produtos.Fiis;
 
+
 import java.util.List;
 import java.util.Scanner;
 
+
 public class MenuSimulacaoCompleta {
+
 
     public static void simulacaoCompleta(){
         Scanner sc = new Scanner(System.in);
         double capital = 0.0, aporteMensal = 0.0, precoCota = 0.0,
                 dividendoPorCota = 0.0, precoCompra =0.0, precoVenda = 0.0;
+
+
         int prazo = 0, quantidadeCotas = 0, quantidade=0, reinvestir = 0;
         boolean digitoCerto = false;
 
+
         System.out.println("-----------TELA DE SIMULACAO COMPLETA--------");
+
 
         while (!digitoCerto) {
             System.out.println("1- Digite um Capital inicial: ");
@@ -27,6 +34,7 @@ public class MenuSimulacaoCompleta {
                 sc.next();
             }
         }
+
 
         digitoCerto = false;
         while (!digitoCerto) {
@@ -40,6 +48,7 @@ public class MenuSimulacaoCompleta {
             }
         }
 
+
         digitoCerto = false;
         while (!digitoCerto) {
             System.out.println("3- Digite um prazo para a simulacao: ");
@@ -51,6 +60,7 @@ public class MenuSimulacaoCompleta {
                 sc.next();
             }
         }
+
 
         digitoCerto = false;
         while (!digitoCerto) {
@@ -64,30 +74,33 @@ public class MenuSimulacaoCompleta {
             }
         }
 
+
         CalculadoraVariavel calculadoraV = new CalculadoraVariavel();
         List <Fiis> fiis = calculadoraV.simularFundoImobiliario(new Fiis (capital, aporteMensal,
                 prazo, quantidadeCotas, reinvestir));
+
 
         for (Fiis resultados : fiis){
             System.out.println("nome" + resultados.getNome()
                     + "Saldo cotas" + resultados.getSaldoCotas()
                     + "Saldo Dividendos" + resultados.getSaldoDividendos());
 
+
         }
 
 
-        List<Acoes> acoes = calculadoraV.simularAcao(new Acoes(capital,aporteMensal,prazo));
-
-        //Acoes acoes = calculadoraV.simularAcao(new Acoes(capital, prazo, quantidade, precoVenda))
 
 
-        //Ações
-        /*
-        if (saldo > 0) System.out.println("Lucro: R$ " + df.format(saldo));
-        else if (saldo < 0) System.out.println("Prejuízo: R$ " + df.format(Math.abs(saldo)));
-        else System.out.println("Você não teve lucro nem prejuízo.");*/
+        List<Acoes> acoes =  calculadoraV.simularAcao(capital,prazo);
+        for (Acoes resultados : acoes ) {
+            if(resultados.getSaldoFinal() > 0 ) {
+                System.out.println( "nome" + resultados.getNome() + "Valor investido" + capital + "Quantidade de acoes: " + resultados.getQtdAcoes() + "lucro: R$ " + resultados.getSaldoFinal());
+            } else {
+                System.out.println( "nome" + resultados.getNome() + "Valor investido" + capital + "Quantidade de acoes: " + resultados.getQtdAcoes() +"Prejuizo: R$ " + resultados.getSaldoFinal());
+            }
 
 
+        }
 
 
 
