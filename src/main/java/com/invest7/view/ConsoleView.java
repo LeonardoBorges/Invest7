@@ -1,6 +1,6 @@
 package com.invest7.view;
 
-import com.invest7.model.produtos.RendaFixa;
+/*import com.invest7.model.produtos.RendaFixa;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -51,3 +51,5 @@ public class ConsoleView {
             .forEach(p -> System.out.println(p.getNome() + ": " + nf.format(p.getValorTotal())));
     }
 }
+
+ */
