@@ -1,82 +1,52 @@
 package com.invest7.view;
 
-import com.invest7.controller.AuthController;
-import com.invest7.controller.UserReadController;
-import com.invest7.controller.UserUpdateController;
-import com.invest7.model.UserRead;
+import com.invest7.controller.user.UserController;
+import com.invest7.view.menus.simulacao.MenuPrincSimulacoesDisp;
+import com.invest7.view.menus.user.MenuPrincConta;
+import com.invest7.view.menus.user.MenuPrincQuest;
 
 import java.util.Scanner;
 
 public class MenuPrincipal {
-    public void ExibirMenuPrincipal() {
+    public static void ExibirMenuPrincipal() {
         Scanner sc = new Scanner(System.in);
+        int escolhas;
 
-        String escolhas = "";
-
-        while (!escolhas.equalsIgnoreCase("fim")) {
-            System.out.println("1- Fazer Simulação Completa");
-            System.out.println("2- Fazer Simulação por Perfil");
-            System.out.println("3- FAQ");
-            System.out.println("4- Visualizar seus dados cadastrados");
-            System.out.println("5- Atualizar seus dados cadastrais");
-            System.out.println("6- Refazer Questionário");
-            System.out.println("7- Logout");
-            System.out.println("8- Deletar Conta");
-            System.out.println("Digite 'fim' para sair!");
-            escolhas = sc.next();
+        do {
+            System.out.println("1- Simulações");
+            System.out.println("2- Conta");
+            System.out.println("3- Refazer Questionário");
+            System.out.println("4- FAQ");
+            System.out.println("5- Logout");
+            System.out.println("0- Sair");
+            escolhas = Integer.parseInt(sc.next());
 
             switch (escolhas) {
-                case "1":
-                    MenuSimulacaoCompleta simulacaoCompleta = new MenuSimulacaoCompleta();
-                    simulacaoCompleta.simulacaoCompleta();
+                case 1:
+                    MenuPrincSimulacoesDisp.exibeMenuSimDisp();
                     break;
-                case "2":
-                    //
+                case 2:
+                    MenuPrincConta.exibeOpConta();
                     break;
-                case "3":
-                        // fazer FAQ
+                case 3:
+                    MenuPrincQuest.refazerQuest();
                     break;
-                case "4":
-                    UserReadController userReadC = new UserReadController();
-                    UserRead userRead = userReadC.lerUser();
-                    if (userRead != null) {
-                        System.out.println("Usuário encontrado:");
-                        System.out.println("Nome: " + userRead.getNome());
-                        System.out.println("Email: " + userRead.getEmail());
-                        System.out.println("CPF: " + userRead.getCpf());
-                        System.out.println("Gênero: " + userRead.getGenero());
-                        System.out.println("Endereço: " + userRead.getEndereco());
-                        System.out.println("Data de Nascimento: " + userRead.getDt_nasc());
-                    }  else {
-                        System.out.println("Usuário não encontrado.");
-                    }
+                case 4:
+                    FaqSimuInvestimentos.exibirFaq();
                     break;
-
-                case "5":
-                    MenuUptade menuUptade = new MenuUptade();
-                    menuUptade.MenuUptade();
-                    break;
-                case "6":
-
-
-                    break;
-                case "7":
-                    AuthController user = new AuthController();
+                case 5:
+                    // AuthController user = new AuthController();
+                    UserController user = new UserController();
                     user.logout();
-
                     break;
-                case "8":
-                    MenuDelete menuDelete = new MenuDelete();
-                    menuDelete.confirmarDelete();
-                    break;
-                case "fim":
-
+                case 0:
+                    System.out.println("Finalizando...");
                     break;
                 default:
-
+                    System.out.println("Opção Inválida");
                     break;
             }
-        }
+        } while (escolhas != 0);
 
         sc.close();
     }

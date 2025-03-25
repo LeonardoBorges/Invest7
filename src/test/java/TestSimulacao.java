@@ -1,6 +1,6 @@
-import com.invest7.controller.CpfValidate;
+import com.invest7.controller.user.CpfValidate;
 import com.invest7.controller.DataValidate;
-import com.invest7.model.Produto;
+import com.invest7.model.produtos.Produto;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;

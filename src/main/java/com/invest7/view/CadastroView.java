@@ -1,14 +1,12 @@
 package com.invest7.view;
 
-import com.invest7.controller.DataValidate;
+import com.invest7.controller.*;
+import com.invest7.controller.user.CpfValidate;
+import com.invest7.controller.user.UserController;
+import com.invest7.view.forms.FormularioPerfilInvestidor;
 
-import java.util.Date;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import com.invest7.controller.CpfValidate;
-import com.invest7.controller.HashSenha;
-import com.invest7.controller.UserCreateController;
 
 
 public class CadastroView {
@@ -18,10 +16,10 @@ public class CadastroView {
         DataValidate data = new DataValidate();
         HashSenha senhacrip = new HashSenha();
         String escolha = null;
-        int opcaoGenero = 0;
+        int opcaoGenero = 0, perfil_id =0;
         boolean digitoCerto = false;
         MenuPrincipal menuPrincipal = new MenuPrincipal();
-        UserCreateController userCreate = new UserCreateController();
+        UserController userC = new UserController();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
         System.out.println("-----------TELA DE CADASTRO--------");
@@ -47,7 +45,7 @@ public class CadastroView {
             String cpfValidado = CpfValidate.validaCpf(cpf);
 
             if (cpfValidado != null) {
-                boolean cpfExiste = userCreate.verificaCPF(cpfValidado);
+                boolean cpfExiste = userC.verificaCPF(cpfValidado);
 
                 if (cpfExiste) {
                     System.out.println("CPF já cadastrado. Tente novamente.");
@@ -64,12 +62,35 @@ public class CadastroView {
         digitoCerto = false;
         while (!digitoCerto) {
             System.out.println("3- Digite o seu endereco: ");
-            if (sc.hasNextLine()) {
-                endereco = sc.nextLine();
-                digitoCerto = true;
-            } else {
-                System.out.println("Endereco Incorreto, digite novamente...");
-                sc.next();
+            System.out.println("Digite 1 - para digitar o endereco");
+            System.out.println("Digite 2 - para buscar o CEP por API");
+            int escolhaEndereco = sc.nextInt();
+            sc.nextLine();
+            switch (escolhaEndereco) {
+                case (1):
+                if (sc.hasNextLine()) {
+                    endereco = sc.nextLine();
+                    digitoCerto = true;
+                } else {
+                    System.out.println("Tipo de entrada incorreta, digite novamente...");
+                    sc.next();
+                }
+                break;
+
+                case 2:
+                    System.out.println("Digite o CEP");
+                    String cep = sc.nextLine();
+                    BuscarCep viacep = new BuscarCep();
+                    endereco = viacep.buscarApi(cep);
+                    System.out.println("Endereco : " + endereco);
+                    digitoCerto = true;
+                    break;
+
+                default:
+                    System.out.println("Opcao invalida, digite novamente...");
+                    break;
+
+
             }
         }
 
@@ -125,7 +146,7 @@ public class CadastroView {
             System.out.println("6- Digite o seu email: ");
             email = sc.nextLine();
             if (validarEmail(email)) {
-                boolean emailExiste = userCreate.verificaEmail(email);
+                boolean emailExiste = userC.verificaEmail(email);
                 if (emailExiste) {
                     System.out.println("Email já cadastrado. Tente novamente.");
                 } else {
@@ -152,8 +173,19 @@ public class CadastroView {
 
         senhaHash = senhacrip.hashSenha(senha); //passa a senha cadastrada e transforma em hash
 
-
-        boolean    resultadoCliente = userCreate.criarUser(nome, email, senhaHash, cpf, endereco,genero, data_nasc);
+        digitoCerto = false;
+        while (!digitoCerto) {
+            FormularioPerfilInvestidor formulario = new FormularioPerfilInvestidor();
+           perfil_id =  formulario.calcularPontuacao();
+            if (perfil_id > 0) {
+                System.out.println("Perfil Realizado");
+                digitoCerto = true;
+            } else {
+                System.out.println("Endereco Incorreto, digite novamente...");
+                sc.next();
+            }
+        }
+        boolean    resultadoCliente = userC.criarUser(nome, email, senhaHash, cpf, endereco,genero, data_nasc, perfil_id);
         if (!resultadoCliente) {
             System.out.println("Por algum motivo deu erro, faça o cadastro novamente!!");
         } else {
