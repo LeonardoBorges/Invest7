@@ -1,4 +1,4 @@
-package com.invest7.view;
+package com.invest7.view.forms;
 
 import java.util.Scanner;
 
