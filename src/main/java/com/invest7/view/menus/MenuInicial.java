@@ -2,7 +2,8 @@ package com.invest7.view.menus;
 
 import com.invest7.view.CadastroView;
 import com.invest7.view.LoginView;
-import com.invest7.view.PreviaFormPerfilInvest;
+import com.invest7.view.SimulPrevia;
+import com.invest7.view.forms.PreviaFormPerfilInvest;
 
 import java.util.Scanner;
 
@@ -30,8 +31,9 @@ public class MenuInicial {
                     cadastroView.CriarUsuario();
                     break;
                 case 3:
-                    // Código para fazer prévia de simulado
-                    System.out.println("Prévia de Simulado");
+
+                    SimulPrevia simulacaoPrevia = new SimulPrevia();
+                    simulacaoPrevia.simPrevia();
                     break;
                 case 4:
                     PreviaFormPerfilInvest previaFomrs = new PreviaFormPerfilInvest();

@@ -3,6 +3,7 @@ package com.invest7.view;
 import com.invest7.controller.*;
 import com.invest7.controller.user.CpfValidate;
 import com.invest7.controller.user.UserController;
+import com.invest7.view.forms.FormularioPerfilInvestidor;
 
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
