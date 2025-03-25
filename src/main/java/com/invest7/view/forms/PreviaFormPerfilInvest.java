@@ -1,4 +1,4 @@
-package com.invest7.view;
+package com.invest7.view.forms;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,16 +40,11 @@ public class PreviaFormPerfilInvest {
         System.out.println("\n===== Resultado do Perfil de Investidor =====");
         System.out.println("Pontuação total: " + mediaPontuacao);
 
-        if (mediaPontuacao <= 33) {
-            System.out.println("Perfil Conservador: Você valoriza estabilidade e baixa tolerância ao risco.");
-        } else if (mediaPontuacao <= 66) {
-            System.out.println("Perfil Moderado: Você busca um equilíbrio entre segurança e crescimento.");
-        } else if (mediaPontuacao <= 100) {
-            System.out.println("Perfil Arrojado: Você tem alta tolerância ao risco e foca na rentabilidade.");
-        } else {
-            System.out.println("Perfil Indefinido: Tente refazer o teste.");
-        }
-
+        if (mediaPontuacao <= 33) System.out.println("Perfil Conservador: Você valoriza estabilidade e baixa tolerância ao risco.");
+        else if (mediaPontuacao <= 66) System.out.println("Perfil Moderado: Você busca um equilíbrio entre segurança e crescimento.");
+        else if (mediaPontuacao <= 100)  System.out.println("Perfil Arrojado: Você tem alta tolerância ao risco e " +
+                "foca na rentabilidade.");
+        else System.out.println("Perfil Indefinido: Tente refazer o teste.");
 
     }
 }

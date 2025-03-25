@@ -3,7 +3,7 @@ package com.invest7.view.menus.user;
 import com.invest7.controller.user.UserController;
 import com.invest7.controller.user.UserSession;
 import com.invest7.model.UserModel;
-import com.invest7.view.FormularioPerfilInvestidor;
+import com.invest7.view.forms.FormularioPerfilInvestidor;
 
 import java.util.Scanner;
 
