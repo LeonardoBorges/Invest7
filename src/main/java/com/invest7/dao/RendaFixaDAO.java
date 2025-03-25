@@ -1,6 +1,6 @@
 package com.invest7.dao;
 
-import com.invest7.model.produtos.RendaFixa;
+/*import com.invest7.model.produtos.RendaFixa;
 import com.invest7.util.ConnectionFactory;
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,3 +37,5 @@ public class RendaFixaDAO {
         return produtos;
     }
 }
+
+ */

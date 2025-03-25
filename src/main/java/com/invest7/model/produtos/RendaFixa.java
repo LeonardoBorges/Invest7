@@ -63,3 +63,5 @@ public class RendaFixa extends Produto {
     public BigDecimal getValorTotal() { return valorTotal; }
     public String getPercentualLucro() { return percentualLucro; }
 }
+
+

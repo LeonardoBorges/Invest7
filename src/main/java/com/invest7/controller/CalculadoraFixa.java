@@ -1,6 +1,6 @@
 package com.invest7.controller;
 
-import com.invest7.dao.RendaFixaDAO;
+/*import com.invest7.dao.RendaFixaDAO;
 import com.invest7.model.produtos.RendaFixa;
 import com.invest7.util.TaxService;
 import java.math.BigDecimal;
@@ -69,3 +69,5 @@ public class CalculadoraFixa {
         return taxaAnual.divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
     }
 }
+
+ */

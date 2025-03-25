@@ -1,6 +1,7 @@
 package com.invest7;
 
 import com.invest7.view.menus.MenuInicial;
+
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
@@ -28,7 +29,5 @@ public class Main {
         System.out.println();
         System.out.println(VERMELHO + " ||=========================================================||" + RESET);
         System.out.println(VERMELHO + " Obrigado por usar o nosso sistema, volte mais vezes!! " + RESET);
-
-
     }
 }
