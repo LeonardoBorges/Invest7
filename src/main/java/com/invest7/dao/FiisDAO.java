@@ -15,29 +15,26 @@ public class FiisDAO {
             List<Fiis> fiisAll = new ArrayList<>();
             String sql = "SELECT nome_prod, preco_fiis, dividend_yeld, desvio_cotas" +
                     ", desvio_dividendos FROM fiis";
+
             try (Connection conn = ConnectionFactory.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+                 PreparedStatement stmt = conn.prepareStatement(sql);
+                 ResultSet rs = stmt.executeQuery()) {
 
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        Fiis fii = new Fiis(
-                                rs.getString("nome_prod"),
-                                rs.getDouble("preco_fiis"),
-                                rs.getDouble("dividend_yeld"),
-                                rs.getDouble("desvio_cotas"),
-                                rs.getDouble("desvio_dividendos")
-
-                        );
-
-                        fiisAll.add(fii);
-                    }
+                while (rs.next()) {
+                    Fiis fii = new Fiis(
+                            rs.getString("nome_prod"),
+                            rs.getDouble("preco_fiis"),
+                            rs.getDouble("dividend_yeld"),
+                            rs.getDouble("desvio_cotas"),
+                            rs.getDouble("desvio_dividendos")
+                    );
+                    fiisAll.add(fii);
                 }
-            } catch (SQLException e) {  // Captura apenas SQLException
-                System.err.println("Erro ao buscar usuário: " + e.getMessage());
-                return null;
+            } catch (SQLException e) {
+                System.err.println("Erro ao buscar FIIs: " + e.getMessage());
+                throw new RuntimeException("Erro ao buscar FIIs no banco de dados", e);
             }
-
             return fiisAll;
         }
-
 }
+
