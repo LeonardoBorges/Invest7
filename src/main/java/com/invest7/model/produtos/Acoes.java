@@ -15,19 +15,16 @@ public class Acoes extends Produto {
 
     public Acoes(double valorInvestido, int meses) {
         super(valorInvestido, meses);
-
-
     }
 
-
-    public Acoes(String nome, double valorInvestido, int qtdAcoes, double txIr, double precoAcao, double desvio) {
+    public Acoes(String nome, double valorInvestido, int qtdAcoes,
+                 double txIr, double precoAcao, double desvio) {
         super(nome, valorInvestido);
-        this.qtdAcoes = qtdAcoes;
-        this.txIr = txIr;
-        this.precoAcao = precoAcao;
-        this.desvio = desvio;
+        setQtdAcoes(qtdAcoes);
+        setTxIr(txIr);
+        setPrecoAcao(precoAcao);
+        setDesvio(desvio);
     }
-
 
     public Acoes(double valorInvestido, int meses, int qtdAcoes, double precoVenda) {
         super(valorInvestido, meses);
@@ -35,8 +32,7 @@ public class Acoes extends Produto {
         this.precoVenda = precoVenda;
     }
 
-
-    public Acoes(String nome, double txIr, double precoAcoes, double desvio) {
+    public Acoes(String nome, double txIr, double precoAcao, double desvio) {
         super(nome);
         this.txIr = txIr;
         this.precoAcao = precoAcao;
@@ -44,57 +40,60 @@ public class Acoes extends Produto {
     }
 
 
-    public void mostrarRisco() {
-        System.out.println("Risco do investimento: " + desvio + "% de variação");
-    }
-
-
+    // Getters e Setters
     public int getQtdAcoes() {
         return qtdAcoes;
     }
-
 
     public void setQtdAcoes(int qtdAcoes) {
         this.qtdAcoes = qtdAcoes;
     }
 
-
     public double getTxIr() {
         return txIr;
     }
-
 
     public void setTxIr(double txIr) {
         this.txIr = txIr;
     }
 
-
     public double getPrecoAcao() {
         return precoAcao;
     }
-
 
     public void setPrecoAcao(double precoAcao) {
         this.precoAcao = precoAcao;
     }
 
-
     public double getPrecoVenda() {
         return precoVenda;
     }
-
 
     public void setPrecoVenda(double precoVenda) {
         this.precoVenda = precoVenda;
     }
 
-
     public double getDesvio() {
         return desvio;
     }
 
-
     public void setDesvio(double desvio) {
         this.desvio = desvio;
+    }
+
+    public double getCustoTotal() {
+        return custoTotal;
+    }
+
+    public double getValorVenda() {
+        return valorVenda;
+    }
+
+    public double getResultado() {
+        return resultado;
+    }
+
+    public double getImposto() {
+        return imposto;
     }
 }

@@ -1,5 +1,6 @@
 package com.invest7.view.menus.simulacao;
 import com.invest7.controller.CalculadoraVariavel;
+import com.invest7.model.produtos.Acoes;
 import com.invest7.model.produtos.Fiis;
 
 import java.util.List;
@@ -51,51 +52,11 @@ public class MenuSimulacaoCompleta {
             }
         }
 
-        System.out.println("-----------Fundo Imobiliário--------");
-
-        digitoCerto = false;
-        while (!digitoCerto) {
-            System.out.println("4- Digite a quantidade de cotas compradas: ");
-            if (sc.hasNextInt()) {
-                quantidadeCotas = sc.nextInt();
-                digitoCerto = true;
-            } else {
-                System.out.println("Valor Incorreto, digite novamente...");
-                sc.next();
-            }
-        }
-
         digitoCerto = false;
         while (!digitoCerto) {
             System.out.println("5- Deseja reinvestir os dividendos?\n1-sim | 2-não: ");
             if (sc.hasNextInt()) {
                 reinvestir = sc.nextInt();
-                digitoCerto = true;
-            } else {
-                System.out.println("Valor Incorreto, digite novamente...");
-                sc.next();
-            }
-        }
-
-        System.out.println("-----------Ações--------");
-
-        digitoCerto = false;
-        while (!digitoCerto) {
-            System.out.println("6- Digite a quantidade de ações compradas: ");
-            if (sc.hasNextInt()) {
-                quantidade = sc.nextInt();
-                digitoCerto = true;
-            } else {
-                System.out.println("Valor Incorreto, digite novamente...");
-                sc.next();
-            }
-        }
-
-        digitoCerto = false;
-        while (!digitoCerto) {
-            System.out.println("7- Digite o preço de venda da ação: R$ ");
-            if (sc.hasNextInt()) {
-                precoVenda = sc.nextDouble();
                 digitoCerto = true;
             } else {
                 System.out.println("Valor Incorreto, digite novamente...");
@@ -114,10 +75,13 @@ public class MenuSimulacaoCompleta {
 
         }
 
+
+        List<Acoes> acoes = calculadoraV.simularAcao(new Acoes(capital,aporteMensal,prazo));
+
         //Acoes acoes = calculadoraV.simularAcao(new Acoes(capital, prazo, quantidade, precoVenda))
 
 
-         //Ações
+        //Ações
         /*
         if (saldo > 0) System.out.println("Lucro: R$ " + df.format(saldo));
         else if (saldo < 0) System.out.println("Prejuízo: R$ " + df.format(Math.abs(saldo)));
