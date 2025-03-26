@@ -1,11 +1,8 @@
-package com.invest7.model;
+package com.invest7.model.produtos;
 
 import java.text.DecimalFormat;
 
-public class Investimento {
-    private String nome;
-    private double valorInvestido;
-    private int meses;
+public class Investimento extends Produto {
     private double aporte;
     private double preFix;
     private double posFix;
@@ -14,44 +11,37 @@ public class Investimento {
     private double valorLiquido;
     private double rentabilidade;
 
-    /* - Nome - super
-    * - Valor Investido - super
-    * - meses - super
-    * - aporte
-    * - taxa de juros
-    * - imposto de renda*/
+    
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public Investimento(String nome, double valorBruto, double valorLiquido, double rentabilidade) {
-        this.nome = nome;
+        super(nome);
         this.valorBruto = valorBruto;
         this.valorLiquido = valorLiquido;
         this.rentabilidade = rentabilidade;
     }
 
     public Investimento(double valorInvestido, double aporte, int meses, double preFix) {
-        this.valorInvestido = valorInvestido;
+        super(valorInvestido, meses);
         this.aporte = aporte;
-        this.meses = meses;
         this.preFix = preFix;
     }
 
     public Investimento(double valorInvestido, double aporte, double posFix, int meses) {
-        this.valorInvestido = valorInvestido;
+        super(valorInvestido, meses);
         this.aporte = aporte;
         this.posFix = posFix;
-        this.meses = meses;
+
     }
 
     public Investimento(double valorInvestido,int meses, double aporte, double ipcaSelic) {
-        this.valorInvestido = valorInvestido;
-        this.meses = meses;
+        super(valorInvestido, meses);
         this.aporte = aporte;
         this.ipcaSelic = ipcaSelic;
     }
 
     // Getters
-    public String getNome() { return nome; }
+
     public double getValorBruto() { return valorBruto; }
     public double getValorLiquido() { return valorLiquido; }
     public double getRentabilidade() { return rentabilidade; }
@@ -64,21 +54,6 @@ public class Investimento {
         this.aporte = aporte;
     }
 
-    public int getMeses() {
-        return meses;
-    }
-
-    public void setMeses(int meses) {
-        this.meses = meses;
-    }
-
-    public double getValorInvestido() {
-        return valorInvestido;
-    }
-
-    public void setValorInvestido(double valorInvestido) {
-        this.valorInvestido = valorInvestido;
-    }
 
     public double getPreFix() {
         return preFix;
