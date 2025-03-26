@@ -1,6 +1,6 @@
 package com.invest7.controller;
 
-import com.invest7.model.Investimento;
+import com.invest7.model.produtos.Investimento;
 
 import java.util.ArrayList;
 import java.util.Collections;

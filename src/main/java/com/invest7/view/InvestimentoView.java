@@ -1,8 +1,7 @@
 package com.invest7.view;
 
-import com.invest7.model.Investimento;
+import com.invest7.model.produtos.Investimento;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Scanner;

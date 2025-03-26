@@ -14,8 +14,6 @@ public class Produto {
         this.meses = meses;
     }
 
-
-
     public Produto(int idProduto) {
         this.idProduto = idProduto;
     }
