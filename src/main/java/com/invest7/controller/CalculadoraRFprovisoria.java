@@ -1,4 +1,4 @@
-package com.invest7.controller;
+/*package com.invest7.controller;
 
 import java.text.DecimalFormat;
 
@@ -34,3 +34,5 @@ public class CalculadoraRFprovisoria {
                 +"%\nRendimento Liquido: R$" + df.format(rendLiq) +"\n" );
     }
 }
+
+ */

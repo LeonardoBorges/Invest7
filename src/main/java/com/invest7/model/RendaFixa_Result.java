@@ -1,4 +1,4 @@
-package com.invest7.model;
+/*package com.invest7.model;
 
 import java.math.BigDecimal;
 
@@ -50,3 +50,5 @@ public class RendaFixa_Result {
         return percentOptimistic;
     }
 }
+
+ */

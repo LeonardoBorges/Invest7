@@ -1,6 +1,4 @@
-package com.invest7.view.menus.simulacao.perfil;
-
-import com.invest7.controller.CalculadoraRFprovisoria;
+/*.CalculadoraRFprovisoria;
 
 import java.util.Scanner;
 
@@ -77,4 +75,6 @@ public class MenuPerfilModerado {
         cf.imprNIsento(rBrutoTesSelic, rLiqTesSelic, impRenda, 0.1375);
     }
 }
+
+ */
 
