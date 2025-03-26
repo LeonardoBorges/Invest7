@@ -1,4 +1,4 @@
-package com.invest7.view.menus.simulacao.perfil;
+/*package com.invest7.view.menus.simulacao.perfil;
 import com.invest7.controller.CalculadoraRFprovisoria;
 
 import java.util.Scanner;
@@ -76,3 +76,5 @@ public class MenuPerfilConservador {
         cf.imprNIsento(rBrutoTesSelic, rLiqTesSelic, impRenda, 0.1375);
     }
 }
+
+ */

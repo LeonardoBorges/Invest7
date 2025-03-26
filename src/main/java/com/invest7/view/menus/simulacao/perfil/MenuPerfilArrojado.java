@@ -1,4 +1,4 @@
-package com.invest7.view.menus.simulacao.perfil;
+/*package com.invest7.view.menus.simulacao.perfil;
 
 import com.invest7.controller.CalculadoraRFprovisoria;
 
@@ -24,9 +24,9 @@ public class MenuPerfilArrojado {
 
         /* Os métodos são provisórios*/
 
-    }
 
-    public static void exibeRF (double impRenda, int meses) {
+
+    /*public static void exibeRF (double impRenda, int meses) {
         System.out.println("++++Renda Fixa++++");
         System.out.println("Insira o valor inicial de investimento: R$ ");
         double valorInicial = sc.nextDouble();
@@ -69,4 +69,7 @@ public class MenuPerfilArrojado {
 
     }
 }
+
+     */
+
 

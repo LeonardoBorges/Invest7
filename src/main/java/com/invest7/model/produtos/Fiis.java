@@ -1,5 +1,7 @@
 package com.invest7.model.produtos;
 
+import java.math.BigDecimal;
+
 public class Fiis extends Produto {
     private double aporte;
     private int qtdCotas;
@@ -36,6 +38,11 @@ public class Fiis extends Produto {
         this.desvioDividendos = desvioDividendos;
     }
 
+    public Fiis(double aporte, int meses, int qtdCotas) {
+        super( meses);
+        this.qtdCotas = qtdCotas;
+        this.aporte = aporte;
+    }
 
     public double getAporte() {
         return aporte;

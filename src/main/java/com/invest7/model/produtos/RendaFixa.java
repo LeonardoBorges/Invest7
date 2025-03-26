@@ -1,4 +1,4 @@
-package com.invest7.model.produtos;
+/*package com.invest7.model.produtos;
 
 import java.math.BigDecimal;
 
@@ -63,5 +63,7 @@ public class RendaFixa extends Produto {
     public BigDecimal getValorTotal() { return valorTotal; }
     public String getPercentualLucro() { return percentualLucro; }
 }
+
+ */
 
 

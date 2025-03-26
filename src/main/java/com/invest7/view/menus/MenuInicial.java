@@ -2,7 +2,7 @@ package com.invest7.view.menus;
 
 import com.invest7.view.CadastroView;
 import com.invest7.view.LoginView;
-import com.invest7.view.SimulPrevia;
+//import com.invest7.view.SimulPrevia;
 import com.invest7.view.forms.PreviaFormPerfilInvest;
 
 import java.util.Scanner;
@@ -32,8 +32,8 @@ public class MenuInicial {
                     break;
                 case 3:
 
-                    SimulPrevia simulacaoPrevia = new SimulPrevia();
-                    simulacaoPrevia.simPrevia();
+                    //SimulPrevia simulacaoPrevia = new SimulPrevia();
+                    //simulacaoPrevia.simPrevia();
                     break;
                 case 4:
                     PreviaFormPerfilInvest previaFomrs = new PreviaFormPerfilInvest();
