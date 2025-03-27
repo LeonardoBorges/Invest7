@@ -144,14 +144,27 @@ public class MenuSimulacaoCompleta {
 
         System.out.println();
 
-        System.out.println("///// Simulação de ações /////");
         List<Acoes> acoes = calculadoraV.simularAcao(capital, prazo);
+        System.out.println("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+        System.out.println("║                                             Simulação de Ações                                             ║");
+        System.out.println("╠════════╦═══════════════╦════════╦═══════════╦═══════════════╦═══════════════╦══════════════╦═══════════════╣");
+        System.out.println("║  Ação  ║    Capital    ║  Qtd   ║ Resultado ║ Total Compra  ║ Total Venda   ║  Saldo Final ║ Troco capital ║");
+        System.out.println("╠════════╬═══════════════╬════════╬═══════════╬═══════════════╬═══════════════╬══════════════╣═══════════════╣");
+
         for (Acoes resultados : acoes) {
-            if (resultados.getSaldoFinal() > 0) {
-                System.out.println("nome" + resultados.getNome() + "Valor investido" + capital + "Quantidade de acoes: " + resultados.getQtdAcoes() + "lucro: R$ " + resultados.getSaldoFinal());
-            } else {
-                System.out.println("nome" + resultados.getNome() + "Valor investido" + capital + "Quantidade de acoes: " + resultados.getQtdAcoes() + "Prejuizo: R$ " + resultados.getSaldoFinal());
+            String sinal = resultados.getSaldoFinal() > 0 ? "+" : "";
+            System.out.printf("║ %-6s ║ %-13s ║ %-6d ║ %-9s ║ %-13s ║ %-13s ║ %-12s ║ %-13s ║%n",
+                    resultados.getNome(),
+                    String.format("R$ %,.2f", capital),
+                    resultados.getQtdAcoes(),
+                    resultados.getSaldoFinal() > 0 ? "LUCRO" : "PREJUÍZO",
+                    String.format("R$ %,.2f", resultados.getCustoTotalCompra()),
+                    String.format("R$ %,.2f", resultados.getValorTotalVenda()),
+                    sinal + String.format("R$ %,.2f", resultados.getSaldoFinal()),
+                    String.format("R$ %,.2f", resultados.getTroco()));
+
+            System.out.println("╚════════╩═══════════════╩════════╩═══════════╩═══════════════╩═══════════════╩══════════════╩═══════════════╝");
+
             }
         }
     }
-}

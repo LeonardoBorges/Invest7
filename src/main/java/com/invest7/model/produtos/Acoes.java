@@ -11,6 +11,9 @@ public class Acoes extends Produto {
     private double resultado;
     private double imposto;
     private double saldoFinal;
+    private double custoTotalCompra;
+    private double valorTotalVenda;
+    private double troco;
 
 
     public Acoes(double valorInvestido, int meses){
@@ -132,5 +135,29 @@ public class Acoes extends Produto {
 
     public double getImposto() {
         return imposto;
+    }
+
+    public double getCustoTotalCompra() {
+        return custoTotalCompra;
+    }
+
+    public void setCustoTotalCompra(double custoTotalCompra) {
+        this.custoTotalCompra = custoTotalCompra;
+    }
+
+    public double getValorTotalVenda() {
+        return valorTotalVenda;
+    }
+
+    public void setValorTotalVenda(double valorTotalVenda) {
+        this.valorTotalVenda = valorTotalVenda;
+    }
+
+    public double getTroco() {
+        return troco;
+    }
+
+    public void setTroco(double troco) {
+        this.troco = troco;
     }
 }
