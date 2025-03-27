@@ -41,6 +41,8 @@ public class UserDAO {
         }
 
     }
+
+
     public boolean deletarBanco(UserModel userD){
         String sql = "DELETE FROM usuarios WHERE email = ?";
         try (Connection conn = ConnectionFactory.getConnection();

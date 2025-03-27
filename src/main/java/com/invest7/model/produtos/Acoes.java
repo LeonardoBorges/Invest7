@@ -14,7 +14,7 @@ public class Acoes extends Produto {
     private double custoTotalCompra;
     private double valorTotalVenda;
     private double troco;
-
+    private int id_acao;
 
     public Acoes(double valorInvestido, int meses){
         super(valorInvestido, meses);
@@ -40,8 +40,9 @@ public class Acoes extends Produto {
     }
 
 
-    public Acoes(String nome, double txIr, double precoAcao, double desvio) {
+    public Acoes(String nome, int id_acao, double txIr, double precoAcao, double desvio) {
         super(nome);
+        this.id_acao = id_acao;
         this.txIr = txIr;
         this.precoAcao = precoAcao;
         this.desvio = desvio;
@@ -159,5 +160,13 @@ public class Acoes extends Produto {
 
     public void setTroco(double troco) {
         this.troco = troco;
+    }
+
+    public int getId_acao() {
+        return id_acao;
+    }
+
+    public void setId_acao(int id_acao) {
+        this.id_acao = id_acao;
     }
 }

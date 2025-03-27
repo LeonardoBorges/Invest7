@@ -1,11 +1,11 @@
 package com.invest7.dao;
+import com.invest7.model.produtos.Acoes;
 import com.invest7.model.produtos.Fiis;
 import com.invest7.util.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class FiisDAO {
 
         public List<Fiis> buscarFiis() {
             List<Fiis> fiisAll = new ArrayList<>();
-            String sql = "SELECT nome_prod, preco_fiis, dividend_yeld, desvio_cotas" +
+            String sql = "SELECT * " +
                     ", desvio_dividendos FROM fiis";
 
             try (Connection conn = ConnectionFactory.getConnection();
@@ -23,6 +23,7 @@ public class FiisDAO {
                 while (rs.next()) {
                     Fiis fii = new Fiis(
                             rs.getString("nome_prod"),
+                            rs.getInt("id_fiis"),
                             rs.getDouble("preco_fiis"),
                             rs.getDouble("dividend_yeld"),
                             rs.getDouble("desvio_cotas"),
@@ -36,5 +37,35 @@ public class FiisDAO {
             }
             return fiisAll;
         }
+
+    public void salvarHistoricoFiis(List<Fiis> fiisSimuladas, int id_user, double aporte, int prazo){
+        String sql = "INSERT INTO fiis_hist(data, id_user,id_fiis, aporte, prazo, preco_fiis, qts_cotas, saldo_cotas, saldo_div)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+
+        LocalDate data = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (Fiis fiis : fiisSimuladas) {
+                stmt.setString(1, data.format(formatter));
+                stmt.setInt(2, id_user);
+                stmt.setInt(3, fiis.getId_fiis());
+                stmt.setDouble(4, aporte);
+                stmt.setInt(5, prazo);
+                stmt.setDouble(6, fiis.getPrecoFiis());
+                stmt.setInt(7,fiis.getQtdCotas());
+                stmt.setDouble(8, fiis.getSaldoCotas());
+                stmt.setDouble(9, fiis.getSaldoDividendos());
+
+                stmt.executeUpdate();
+            }
+
+
+        } catch (SQLException e) {
+            System.err.println("Erro SQL: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
 

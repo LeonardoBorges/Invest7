@@ -1,6 +1,7 @@
 package com.invest7.controller;
 
 
+import com.invest7.controller.user.UserSession;
 import com.invest7.dao.AcoesDao;
 import com.invest7.dao.FiisDAO;
 import com.invest7.model.produtos.Acoes;
@@ -59,8 +60,6 @@ public class CalculadoraVariavel {
                 }
             }
 
-
-
             Fiis fiiSimulado = new Fiis(
                     fii.getNome(),
                     fii.getPrecoFiis(),
@@ -72,11 +71,13 @@ public class CalculadoraVariavel {
 
             fiiSimulado.setSaldoCotas((quantidadeCotas*precoCota));
             fiiSimulado.setSaldoDividendos(saldoDividendos);
+            fiiSimulado.setId_fiis(fii.getId_fiis());
 
 
             fiisSimulados.add(fiiSimulado);
         }
-
+        int userId = UserSession.getLoggedInUserId();
+        dao.salvarHistoricoFiis(fiisSimulados, userId, calculadoraV.getAporte(), calculadoraV.getMeses());
         return fiisSimulados;
     }
 
@@ -117,29 +118,28 @@ public class CalculadoraVariavel {
             if (saldo > 20000){
                 saldo = ((custoTotalCompra - (saldo*txIr))- saldo) ;
 
-
-
-
             } else {
                 saldo = (valorTotalVenda - custoTotalCompra) ;
             }
 
 
             Acoes acoesFinal =  new Acoes(acaoSimulada.getNome());
+            acoesFinal.setId_acao(acaoSimulada.getId_acao());
             acoesFinal.setQtdAcoes(quantidadeAcao);
             acoesFinal.setValorInvestido(capital);
             acoesFinal.setSaldoFinal(saldo);
             acoesFinal.setCustoTotalCompra(custoTotalCompra);
             acoesFinal.setValorTotalVenda(valorTotalVenda);
             acoesFinal.setTroco(troco);
-            //custo total compra
-            // valor total venda
-
+            acoesFinal.setPrecoAcao(acaoSimulada.getPrecoAcao());
 
             acoesFeitas.add(acoesFinal);
+
         }
 
+        int userId = UserSession.getLoggedInUserId();
 
+        dao.salvarHistoricoAcoes(acoesFeitas, userId, capital, prazo);
         return acoesFeitas;
     }
 }
