@@ -20,8 +20,6 @@ public class InvestimentoView {
     private static final String NEGRITO = "\u001B[1m";
 
 
-
-
     public void mostrarMenu() {
         System.out.println(ROXO + NEGRITO + "================================================");
         System.out.println("|" + AZUL + "      CALCULADORA DE INVESTIMENTOS       " + ROXO + "|");

@@ -30,23 +30,20 @@ public class CalculadoraVariavel {
 
 
         for (Fiis fii : resultados) {
-            double saldoDividendos = 0;
-            double dividendoPorCota = fii.getDividendYield();
-            double valorAporte = calculadoraV.getAporte();
-            double precoCota = fii.getPrecoFiis();
-            double desvioCotas = fii.getDesvioCotas() / 100.0;
-            double desvioDividendos = fii.getDesvioDividendos() / 100.0;
+            double saldoDividendos = 0,
+                    dividendoPorCota = fii.getDividendYield(),
+                    valorAporte = calculadoraV.getAporte(),
+                    precoCota = fii.getPrecoFiis(),
+                    desvioCotas = fii.getDesvioCotas() / 100.0,
+                    desvioDividendos = fii.getDesvioDividendos() / 100.0;
 
-
-            int meses = calculadoraV.getMeses();
-            int quantidadeCotas = calculadoraV.getQtdCotas();
-            int reinvestir = calculadoraV.getReinvestir();
-
+            int meses = calculadoraV.getMeses(),
+                    quantidadeCotas = calculadoraV.getQtdCotas(),
+                    reinvestir = calculadoraV.getReinvestir();
 
             for (int mes = 1; mes <= meses; mes++) {
                 double dividendosRecebidos = quantidadeCotas * dividendoPorCota;
                 saldoDividendos += dividendosRecebidos + valorAporte;
-
 
                 if (reinvestir == REINVESTIR_SIM) {
                     int novasCotas = (int) (saldoDividendos / precoCota);
@@ -59,8 +56,6 @@ public class CalculadoraVariavel {
                 }
             }
 
-
-
             Fiis fiiSimulado = new Fiis(
                     fii.getNome(),
                     fii.getPrecoFiis(),
@@ -69,10 +64,8 @@ public class CalculadoraVariavel {
                     fii.getDesvioDividendos()
             );
 
-
             fiiSimulado.setSaldoCotas((quantidadeCotas*precoCota));
             fiiSimulado.setSaldoDividendos(saldoDividendos);
-
 
             fiisSimulados.add(fiiSimulado);
         }
@@ -87,58 +80,36 @@ public class CalculadoraVariavel {
         List<Acoes> acoesFeitas = new ArrayList<>();
 
 
-
-
-        for(Acoes acaoSimulada : resultados){
-            double precoCompra = acaoSimulada.getPrecoAcao();
-            double txIr = acaoSimulada.getTxIr();
-            double desvio =  acaoSimulada.getDesvio()/100.0;
-
+        for(Acoes acaoSimulada : resultados) {
+            double precoCompra = acaoSimulada.getPrecoAcao(),
+                    txIr = acaoSimulada.getTxIr(),
+                    desvio = acaoSimulada.getDesvio() / 100.0;
 
             int quantidadeAcao = (int) (capital / precoCompra);
 
-
             double custoTotalCompra = precoCompra * quantidadeAcao;
 
+            double variacao = (Math.random() * 2 * desvio) - desvio;
 
-            double variacao  = (Math.random() * 2 * desvio) - desvio;
-
-
-            double valorAcaoVenda = precoCompra * (1+variacao);
+            double valorAcaoVenda = precoCompra * (1 + variacao);
             double valorTotalVenda = valorAcaoVenda * quantidadeAcao;
 
-
-            double saldo = ( valorTotalVenda - custoTotalCompra);
+            double saldo = (valorTotalVenda - custoTotalCompra);
             double troco = capital - custoTotalCompra;
 
+            if (saldo > 20000) saldo = ((custoTotalCompra - (saldo * txIr)) - saldo);
+            else saldo = (valorTotalVenda - custoTotalCompra);
 
-
-
-            if (saldo > 20000){
-                saldo = ((custoTotalCompra - (saldo*txIr))- saldo) ;
-
-
-
-
-            } else {
-                saldo = (valorTotalVenda - custoTotalCompra) ;
-            }
-
-
-            Acoes acoesFinal =  new Acoes(acaoSimulada.getNome());
+            Acoes acoesFinal = new Acoes(acaoSimulada.getNome());
             acoesFinal.setQtdAcoes(quantidadeAcao);
             acoesFinal.setValorInvestido(capital);
             acoesFinal.setSaldoFinal(saldo);
             acoesFinal.setCustoTotalCompra(custoTotalCompra);
             acoesFinal.setValorTotalVenda(valorTotalVenda);
             acoesFinal.setTroco(troco);
-            //custo total compra
-            // valor total venda
-
 
             acoesFeitas.add(acoesFinal);
         }
-
 
         return acoesFeitas;
     }
