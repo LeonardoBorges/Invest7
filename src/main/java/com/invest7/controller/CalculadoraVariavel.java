@@ -18,7 +18,7 @@ public class CalculadoraVariavel {
 
 
     //calculadora de FIIs
-    /*public List<Fiis> simularFundoImobiliario(Fiis calculadoraV) {
+    public List<Fiis> simularFundoImobiliario( Fiis calculadoraV) {
         FiisDAO dao = new FiisDAO();
         List<Fiis> resultados = dao.buscarFiis();
         if (resultados == null || resultados.isEmpty()) {
@@ -34,8 +34,9 @@ public class CalculadoraVariavel {
             double dividendoPorCota = fii.getDividendYield();
             double valorAporte = calculadoraV.getAporte();
             double precoCota = fii.getPrecoFiis();
-            double desvioCotas = fii.getDesvioCotas();
-            double desvioDividendos = fii.getDesvioDividendos();
+            double desvioCotas = fii.getDesvioCotas() / 100.0;
+            double desvioDividendos = fii.getDesvioDividendos() / 100.0;
+
 
             int meses = calculadoraV.getMeses();
             int quantidadeCotas = calculadoraV.getQtdCotas();
@@ -51,17 +52,13 @@ public class CalculadoraVariavel {
                     int novasCotas = (int) (saldoDividendos / precoCota);
                     quantidadeCotas += novasCotas;
                     saldoDividendos -= novasCotas * precoCota;
-                } else {
-                    int novasCotasAporte = (int) (valorAporte / precoCota);
+                } if (reinvestir == REINVESTIR_NAO) {
+                    int novasCotasAporte = (int) (saldoDividendos / precoCota);
                     quantidadeCotas += novasCotasAporte;
                     saldoDividendos -= novasCotasAporte * precoCota;
                 }
             }
 
-
-            double saldoCotas = quantidadeCotas * precoCota;
-            double saldoCotasReal = saldoCotas * (1 - desvioCotas);
-            double saldoDivReal = saldoDividendos * (1 - desvioDividendos);
 
 
             Fiis fiiSimulado = new Fiis(
@@ -73,80 +70,9 @@ public class CalculadoraVariavel {
             );
 
 
-            fiiSimulado.setSaldoCotas(saldoCotasReal);
-            fiiSimulado.setSaldoDividendos(saldoDivReal);
-
-
-            fiisSimulados.add(fiiSimulado);
-        }
-
-        return fiisSimulados;
-    }*/
-
-    public List<Fiis> simularFundoImobiliario(Fiis calculadoraV) {
-        FiisDAO dao = new FiisDAO();
-        List<Fiis> resultados = dao.buscarFiis();
-        if (resultados == null || resultados.isEmpty()) {
-            throw new RuntimeException("Nenhum FII encontrado para simulação");
-        }
-
-        List<Fiis> fiisSimulados = new ArrayList<>();
-        for (Fiis fii : resultados) {
-            // Dados específicos para cada FII
-            double dividendYield = 0;
-            double precoCota = 0;
-
-            switch (fii.getNome()) {
-                case "XPLG11":
-                    dividendYield = 78.00;
-                    precoCota = 1.3;
-                    break;
-                case "LVBI11":
-                    dividendYield = 56.00;
-                    precoCota = 1.9;
-                    break;
-                case "AAZQ11":
-                    dividendYield = 87.00;
-                    precoCota = 1.2;
-                    break;
-                case "MXRF11":
-                    dividendYield = 53.00;
-                    precoCota = 3.1;
-                    break;
-                case "TGAR11":
-                    dividendYield = 1.26;
-                    precoCota = 6.47;
-                    break;
-                default:
-                    throw new IllegalArgumentException("FII não reconhecido: " + fii.getNome());
-            }
-
-            // Parâmetros da simulação
-            int quantidadeCotas = calculadoraV.getQtdCotas(); // Definindo um valor fixo para simulação
-            int meses = 12; // Simulação para 12 meses
-            double valorAporte = 0; // Aporte mensal zero
-
-            double saldoDividendos = 0;
-
-            for (int mes = 1; mes <= meses; mes++) {
-                // Cálculo de dividendos considerando o dividend yield
-                double dividendosRecebidos = quantidadeCotas * (precoCota * (dividendYield / 100.0));
-
-                // Adiciona os dividendos ao saldo
-                saldoDividendos += dividendosRecebidos;
-            }
-
-            // Criação do FII simulado
-            Fiis fiiSimulado = new Fiis(
-                    fii.getNome(),
-                    precoCota,
-                    dividendYield,
-                    0, // Desvio de Cotas
-                    0  // Desvio de Dividendos
-            );
-
-            fiiSimulado.setSaldoCotas(quantidadeCotas * precoCota);
+            fiiSimulado.setSaldoCotas((quantidadeCotas*precoCota));
             fiiSimulado.setSaldoDividendos(saldoDividendos);
+
 
             fiisSimulados.add(fiiSimulado);
         }
@@ -155,44 +81,59 @@ public class CalculadoraVariavel {
     }
 
 
-    public List<Acoes> simularAcao(double capital, int prazo) {
+    public List<Acoes> simularAcao(double capital,int prazo) {
         AcoesDao dao = new AcoesDao();
         List<Acoes> resultados = dao.buscarAcao();
         List<Acoes> acoesFeitas = new ArrayList<>();
 
 
-        for (Acoes acaoSimulada : resultados) {
+
+
+        for(Acoes acaoSimulada : resultados){
             double precoCompra = acaoSimulada.getPrecoAcao();
-            int quantidadeAcao = (int) Math.floor(capital / acaoSimulada.getPrecoAcao());
             double txIr = acaoSimulada.getTxIr();
-            double desvio = acaoSimulada.getDesvio() / 100;
-            double variacao = 0;
-            double custoTotal = precoCompra * quantidadeAcao;
-            double valorVenda = 0;
-            double saldoM = 0;
-            double saldoFinal = 0;
+            double desvio =  acaoSimulada.getDesvio()/100.0;
 
 
-            //olha o codigo - errado
-            for (int i = 0; i < prazo; i++) {
-                variacao = (Math.random() * 2 * desvio) - desvio;
-                valorVenda = precoCompra * (1 + variacao);
-                saldoM = saldoM + (valorVenda - precoCompra);
-                i++;
-            }
-            if (saldoM > 20000) {
-                saldoFinal = ((saldoM - (saldoM * txIr)) - custoTotal);
+            int quantidadeAcao = (int) (capital / precoCompra);
+
+
+            double custoTotalCompra = precoCompra * quantidadeAcao;
+
+
+            double variacao  = (Math.random() * 2 * desvio) - desvio;
+
+
+            double valorAcaoVenda = precoCompra * (1+variacao);
+            double valorTotalVenda = valorAcaoVenda * quantidadeAcao;
+
+
+            double saldo = ( valorTotalVenda - custoTotalCompra);
+            double troco = capital - custoTotalCompra;
+
+
+
+
+            if (saldo > 20000){
+                saldo = ((custoTotalCompra - (saldo*txIr))- saldo) ;
+
+
 
 
             } else {
-                saldoFinal = saldoM - custoTotal;
+                saldo = (valorTotalVenda - custoTotalCompra) ;
             }
 
 
-            Acoes acoesFinal = new Acoes(acaoSimulada.getNome());
+            Acoes acoesFinal =  new Acoes(acaoSimulada.getNome());
             acoesFinal.setQtdAcoes(quantidadeAcao);
             acoesFinal.setValorInvestido(capital);
-            acoesFinal.setSaldoFinal(saldoFinal);
+            acoesFinal.setSaldoFinal(saldo);
+            acoesFinal.setCustoTotalCompra(custoTotalCompra);
+            acoesFinal.setValorTotalVenda(valorTotalVenda);
+            acoesFinal.setTroco(troco);
+            //custo total compra
+            // valor total venda
 
 
             acoesFeitas.add(acoesFinal);
