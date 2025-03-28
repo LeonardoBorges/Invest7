@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public class MenuSimulacaoCompleta {
 
+
     public static void simulacaoCompleta(Scanner sc
     ) { // Scanner recebido como parâmetro
 
@@ -29,6 +30,7 @@ public class MenuSimulacaoCompleta {
                 capital = new BigDecimal(inputCapital);
                 if (capital.compareTo(BigDecimal.ZERO) >= 0) {
                     digitoCerto = true;
+
                 } else {
                     System.out.println("Erro: Valor deve ser positivo ou zero.");
                 }
@@ -78,6 +80,7 @@ public class MenuSimulacaoCompleta {
         String idSimulacao = UUID.randomUUID().toString();
         ConsoleView view = new ConsoleView();
         view.exibirSimulacao(resultados, idSimulacao, capital, aporteMensal, meses);
+
 
     }
 

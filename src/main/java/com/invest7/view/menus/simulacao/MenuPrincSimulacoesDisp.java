@@ -1,4 +1,6 @@
 package com.invest7.view.menus.simulacao;
+
+
 import java.util.Scanner;
 
 public class MenuPrincSimulacoesDisp {
@@ -17,7 +19,8 @@ public class MenuPrincSimulacoesDisp {
                     MenuSimulacaoCompleta.simulacaoCompleta(sc);
                     break;
                 case 2:
-                    /// menu perfil
+                    MenuSimulacaoPerfil perfil = new MenuSimulacaoPerfil();
+                    perfil.EscolherPerfilInvestidor();
                     break;
                 case 3:
                     MenuSimulacaoVariavel.simulacaoCompleta();
