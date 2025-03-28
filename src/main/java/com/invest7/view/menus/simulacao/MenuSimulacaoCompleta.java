@@ -20,7 +20,7 @@ public class MenuSimulacaoCompleta {
                 dividendoPorCota = 0.0, precoCompra = 0.0, precoVenda = 0.0;
 
         int prazo = 0, quantidadeCotas = 0, quantidade = 0, reinvestir = 0, simula=0;
-        boolean digitoCerto = false;
+        boolean digitoCerto = false, historico = true;
 
         do {
             System.out.println("-----------TELA DE SIMULACAO COMPLETA--------");
@@ -112,7 +112,7 @@ public class MenuSimulacaoCompleta {
 
 
             CalculadoraVariavel calculadoraV = new CalculadoraVariavel();
-            List<Fiis> fiis = calculadoraV.simularFundoImobiliario(new Fiis(aporteMensal, prazo, quantidadeCotas));
+            List<Fiis> fiis = calculadoraV.simularFundoImobiliario(new Fiis(aporteMensal, prazo, quantidadeCotas), historico);
 
 // Cabeçalho da simulação
             System.out.println("\n===== SIMULAÇÃO DE FIIs =====");
@@ -143,7 +143,7 @@ public class MenuSimulacaoCompleta {
 
             System.out.println();
 
-            List<Acoes> acoes = calculadoraV.simularAcao(capital, prazo);
+            List<Acoes> acoes = calculadoraV.simularAcao(capital, prazo, historico);
             System.out.println("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
             System.out.println("║                                             Simulação de Ações                                             ║");
             System.out.println("╠════════╦═══════════════╦════════╦═══════════╦═══════════════╦═══════════════╦══════════════╦═══════════════╣");
