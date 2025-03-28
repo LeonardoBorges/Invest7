@@ -28,7 +28,7 @@ public class CadastroView {
         while (!digitoCerto) {
             System.out.println("1- Digite o seu nome: ");
             if (sc.hasNextLine()) {
-                 nome = sc.nextLine();
+                nome = sc.nextLine();
                 digitoCerto = true;
             } else {
                 System.out.println("Nome Incorreto, digite novamente...");
@@ -68,14 +68,14 @@ public class CadastroView {
             sc.nextLine();
             switch (escolhaEndereco) {
                 case (1):
-                if (sc.hasNextLine()) {
-                    endereco = sc.nextLine();
-                    digitoCerto = true;
-                } else {
-                    System.out.println("Tipo de entrada incorreta, digite novamente...");
-                    sc.next();
-                }
-                break;
+                    if (sc.hasNextLine()) {
+                        endereco = sc.nextLine();
+                        digitoCerto = true;
+                    } else {
+                        System.out.println("Tipo de entrada incorreta, digite novamente...");
+                        sc.next();
+                    }
+                    break;
 
                 case 2:
                     System.out.println("Digite o CEP");
@@ -95,16 +95,16 @@ public class CadastroView {
         }
 
 
-             do  {
-                System.out.println("4- Digite uma data (no formato yyyy/MM/dd): ");
-                dataString = sc.nextLine();
+        do  {
+            System.out.println("4- Digite uma data (no formato yyyy/MM/dd): ");
+            dataString = sc.nextLine();
 
-                // Valida a data
-                data_nasc = data.validarData(dataString);
-                 if (data_nasc == null) {
-                     System.out.println("Data inválida. Por favor, tente novamente.");
-                 }
-            }while (data_nasc == null);
+            // Valida a data
+            data_nasc = data.validarData(dataString);
+            if (data_nasc == null) {
+                System.out.println("Data inválida. Por favor, tente novamente.");
+            }
+        }while (data_nasc == null);
 
 
 
@@ -137,7 +137,7 @@ public class CadastroView {
                 }
             }else{
                 System.out.println("Digite o numero da opcao...");
-               sc.next();
+                sc.next();
             }
         }
 
@@ -176,7 +176,7 @@ public class CadastroView {
         digitoCerto = false;
         while (!digitoCerto) {
             FormularioPerfilInvestidor formulario = new FormularioPerfilInvestidor();
-           perfil_id =  formulario.calcularPontuacao();
+            perfil_id =  formulario.calcularPontuacao();
             if (perfil_id > 0) {
                 System.out.println("Perfil Realizado");
                 digitoCerto = true;
