@@ -1,5 +1,6 @@
 package com.invest7.model.produtos;
 
+
 public class Acoes extends Produto {
     private int qtdAcoes;
     private double txIr;
@@ -16,11 +17,10 @@ public class Acoes extends Produto {
     private double troco;
     private int id_acao;
 
-    public Acoes(double valorInvestido, int meses){
+
+    public Acoes(double valorInvestido, int meses) {
         super(valorInvestido, meses);
     }
-
-
 
 
     public Acoes(String nome, double valorInvestido, int qtdAcoes,
@@ -52,8 +52,6 @@ public class Acoes extends Produto {
     public Acoes(String nome) {
         super(nome);
     }
-
-
 
 
     // Getters e Setters
@@ -138,35 +136,44 @@ public class Acoes extends Produto {
         return imposto;
     }
 
+
     public double getCustoTotalCompra() {
         return custoTotalCompra;
     }
+
 
     public void setCustoTotalCompra(double custoTotalCompra) {
         this.custoTotalCompra = custoTotalCompra;
     }
 
+
     public double getValorTotalVenda() {
         return valorTotalVenda;
     }
+
 
     public void setValorTotalVenda(double valorTotalVenda) {
         this.valorTotalVenda = valorTotalVenda;
     }
 
+
     public double getTroco() {
         return troco;
     }
+
 
     public void setTroco(double troco) {
         this.troco = troco;
     }
 
+
     public int getId_acao() {
         return id_acao;
     }
 
+
     public void setId_acao(int id_acao) {
         this.id_acao = id_acao;
+
     }
 }
