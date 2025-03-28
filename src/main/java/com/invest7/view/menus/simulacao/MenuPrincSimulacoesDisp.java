@@ -7,16 +7,20 @@ public class MenuPrincSimulacoesDisp {
         int op;
         System.out.println("*********** Simulações ***********");
         do {
-            System.out.println("1- Fazer Simulação Completa");
+            System.out.println("1- Fazer Simulação Completa RF");
             System.out.println("2- Fazer Simulação por Perfil");
+            System.out.println("3- Fazer Simulação RV");
             System.out.println("0- Voltar ao menu principal");
             op = Integer.parseInt(sc.next());
             switch (op) {
                 case 1:
-                    MenuSimulacaoCompleta.simulacaoCompleta();
+                    MenuSimulacaoCompleta.simulacaoCompleta(sc);
                     break;
                 case 2:
                     /// menu perfil
+                    break;
+                case 3:
+                    MenuSimulacaoVariavel.simulacaoCompleta();
                     break;
             }
         } while (op != 0);

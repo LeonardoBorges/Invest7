@@ -1,4 +1,4 @@
-/*package com.invest7.view;
+package com.invest7.view;
 
 import com.invest7.controller.CalculadoraRFprovisoria;
 
@@ -75,4 +75,4 @@ public class SimulPrevia {
 
 }
 
- */
+
