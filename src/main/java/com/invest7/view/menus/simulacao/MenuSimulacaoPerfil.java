@@ -2,6 +2,8 @@ package com.invest7.view.menus.simulacao;
 
 import com.invest7.model.produtos.Fiis;
 import com.invest7.view.menus.simulacao.perfil.MenuPerfilArrojado;
+import com.invest7.view.menus.simulacao.perfil.MenuPerfilConservador;
+import com.invest7.view.menus.simulacao.perfil.MenuPerfilModerado;
 
 import java.util.Scanner;
 
@@ -91,16 +93,18 @@ public class MenuSimulacaoPerfil {
 
         switch (escolhas) {
             case 1:
-                MenuPerfilArrojado arrojado = new MenuPerfilArrojado();
-                arrojado.simulacaoPerfilArrojado(capital, reinvestir, prazo,aporteMensal, quantidadeCotas);
 
+                MenuPerfilConservador conservador = new MenuPerfilConservador();
+                conservador.simulacaoPerfilConservador(capital, reinvestir, prazo,aporteMensal, quantidadeCotas);
 
                 break;
             case 2:
-
+                MenuPerfilModerado moderado = new MenuPerfilModerado();
+                moderado.simulacaoPerfilModerado(capital, reinvestir, prazo,aporteMensal, quantidadeCotas);
                 break;
             case 3:
-
+                MenuPerfilArrojado arrojado = new MenuPerfilArrojado();
+                arrojado.simulacaoPerfilArrojado(capital, reinvestir, prazo,aporteMensal, quantidadeCotas);
                 break;
             default:
                 break;

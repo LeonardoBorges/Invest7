@@ -14,13 +14,23 @@ public class RendaFixa {
     private BigDecimal rendimentoLiquido;
     private BigDecimal valorTotal;
     private String percentualLucro;
+    private int id_renda;
 
     public RendaFixa(String nome, double rentabilidadeBruta, String tipoProduto, boolean taxable) {
+        this.nome = nome;
+        this.id_renda = id_renda;
+        this.rentabilidadeBruta = rentabilidadeBruta;
+        this.tipoProduto = tipoProduto;
+        this.taxable = taxable;
+    }
+
+    public RendaFixa(String nome, int id_renda, double rentabilidadeBruta, String tipoProduto, boolean taxable) {
         this.nome = nome;
         this.rentabilidadeBruta = rentabilidadeBruta;
         this.tipoProduto = tipoProduto;
         this.taxable = taxable;
     }
+
 
     public void setSimulationResults(BigDecimal totalInvestido, BigDecimal rendimentoBruto,
                                      BigDecimal impostoIR, BigDecimal rendimentoLiquido,
